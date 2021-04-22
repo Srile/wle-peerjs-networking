@@ -2,7 +2,7 @@
 
 A small set of components for [Wonderland Engine](https://wonderlandengine.com/ "Wonderland Engine") for basic networking functionalities using [peer.js](https://peerjs.com/ "peer.js").
 
-This project uses host-client architecture, where the host can simply host by calling  `host()` and a client can join by calling `join()`. It supports voice chat out of the box and also handles disconnects and kicking. It is can be used as a started for a variety of multi user WebXR projects with Wonderland Engine. 
+This project uses host-client architecture, where the host can simply host by calling  `host()` and a client can join by calling `join()`. It supports voice chat out of the box and also handles disconnects and kicking. It can be used as a started for a variety of multi user WebXR projects with Wonderland Engine. 
 
 This repository includes a basic scene that you can use as a template for your projects. Anything within the project not documented here is included as part of the polishing of the scene and has been imported from other repositories with permission. Setup instructions can also be found below. 
 
