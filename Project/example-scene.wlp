@@ -1,0 +1,2713 @@
+{
+    "objects": {
+        "14": {
+            "name": "Player",
+            "components": [
+                {
+                    "type": "wasd-controls",
+                    "wasd-controls": {
+                        "headObject": "17"
+                    }
+                }
+            ],
+            "transformation": [
+                0.7160133123397827,
+                0.0,
+                0.6980865001678467,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                -0.6980865001678467,
+                0.0,
+                0.7160133123397827,
+                0.0,
+                -3.2591099739074709,
+                0.0,
+                1.7569212913513184,
+                1.0
+            ]
+        },
+        "15": {
+            "name": "FloorPlane",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                300.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.12488406896591188,
+                -300.0010070800781,
+                0.0,
+                0.0,
+                300.0000610351563,
+                -0.12488367408514024,
+                0.0,
+                0.0,
+                6.821210263296962e-13,
+                0.000006160075372463325,
+                1.0
+            ]
+        },
+        "16": {
+            "name": "Cube",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                2.9802322387695329e-8,
+                0.4999999403953552,
+                5.960464477539065e-8,
+                1.0
+            ],
+            "deleted": true
+        },
+        "17": {
+            "name": "NonVrCamera",
+            "parent": "14",
+            "components": [
+                {
+                    "type": "view"
+                },
+                {
+                    "type": "mouse-look"
+                },
+                {
+                    "type": "cursor"
+                }
+            ]
+        },
+        "18": {
+            "name": "EyeLeft",
+            "parent": "14",
+            "components": [
+                {
+                    "type": "view"
+                },
+                {
+                    "type": "input",
+                    "input": {
+                        "type": "eye left"
+                    }
+                }
+            ]
+        },
+        "19": {
+            "name": "EyeRight",
+            "parent": "14",
+            "components": [
+                {
+                    "type": "view"
+                },
+                {
+                    "type": "input",
+                    "input": {
+                        "type": "eye right"
+                    }
+                },
+                {
+                    "type": "howler-audio-listener"
+                }
+            ]
+        },
+        "21": {
+            "name": "Light",
+            "components": [
+                {
+                    "type": "light",
+                    "light": {
+                        "attenuation": 0.10000000149011612
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                4.656612873077393e-10,
+                3.0,
+                2.0,
+                1.0
+            ]
+        },
+        "23": {
+            "name": "Light.000",
+            "components": [
+                {
+                    "type": "light",
+                    "light": {
+                        "attenuation": 0.10000000149011612
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                -1.0,
+                3.0,
+                -1.0,
+                1.0
+            ]
+        },
+        "24": {
+            "name": "Cone",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "10",
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                1.5,
+                1.0,
+                -1.4901161193847657e-8,
+                1.0
+            ],
+            "deleted": true
+        },
+        "27": {
+            "name": "Sphere",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.75,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.75,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.75,
+                0.0,
+                0.4999999701976776,
+                0.75,
+                -1.25,
+                1.0
+            ],
+            "deleted": true
+        },
+        "32": {
+            "name": "PeerNetworkedPlayerPool",
+            "components": [
+                {
+                    "type": "peer-networked-player-pool"
+                },
+                {
+                    "type": "peer-manager",
+                    "peer-manager": {
+                        "playerHead": "19",
+                        "networkPlayerPool": "32",
+                        "networkSendFrequencyInS": 0.009999999776482582,
+                        "playerRightHand": "61",
+                        "playerLeftHand": "62"
+                    }
+                }
+            ]
+        },
+        "33": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "34": {
+            "name": "Head",
+            "parent": "33",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "35": {
+            "name": "LeftHand",
+            "parent": "33",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.4507295489311218,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.4507295489311218,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.4507295489311218,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "36": {
+            "name": "LeftHand",
+            "parent": "33",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "37": {
+            "name": "RightHand",
+            "parent": "33",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "38": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "39": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "40": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "41": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "42": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "43": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "44": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "45": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "46": {
+            "name": "Head",
+            "parent": "45",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "47": {
+            "name": "LeftHand",
+            "parent": "45",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "48": {
+            "name": "RightHand",
+            "parent": "45",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "49": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "50": {
+            "name": "Head",
+            "parent": "49",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "51": {
+            "name": "LeftHand",
+            "parent": "49",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "52": {
+            "name": "RightHand",
+            "parent": "49",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "53": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "54": {
+            "name": "Head",
+            "parent": "53",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "55": {
+            "name": "LeftHand",
+            "parent": "53",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "56": {
+            "name": "RightHand",
+            "parent": "53",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "57": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "58": {
+            "name": "Head",
+            "parent": "57",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "59": {
+            "name": "LeftHand",
+            "parent": "57",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "60": {
+            "name": "RightHand",
+            "parent": "57",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "61": {
+            "name": "RightHand",
+            "parent": "14",
+            "components": [
+                {
+                    "type": "input",
+                    "input": {
+                        "type": "ray right"
+                    }
+                },
+                {
+                    "type": "cursor",
+                    "cursor": {
+                        "cursorRayObject": "85",
+                        "cursorObject": "87",
+                        "handedness": "right"
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "62": {
+            "name": "LeftHand",
+            "parent": "14",
+            "components": [
+                {
+                    "type": "input",
+                    "input": {
+                        "type": "ray left"
+                    }
+                },
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                },
+                {
+                    "type": "controller-teleport-component",
+                    "controller-teleport-component": {
+                        "teleportIndicatorMeshObject": "84",
+                        "camRoot": "14",
+                        "cam": "18",
+                        "floorGroup": 7
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "sphere": {
+                            "radius": 0.07500000298023224
+                        },
+                        "groups": 4
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "63": {
+            "name": "Mesh",
+            "parent": "34",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.09999999403953552,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.09999999403953552,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.09999999403953552,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                1.0
+            ]
+        },
+        "64": {
+            "name": "Mesh",
+            "parent": "46",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                1.0
+            ]
+        },
+        "65": {
+            "name": "Mesh",
+            "parent": "54",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                1.0
+            ]
+        },
+        "66": {
+            "name": "Mesh",
+            "parent": "50",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                1.0
+            ]
+        },
+        "67": {
+            "name": "Mesh",
+            "parent": "58",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.09999998658895493,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                1.0
+            ]
+        },
+        "68": {
+            "name": "NetworkButtonContainer",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                -3.0,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "network-buttons",
+                    "network-buttons": {
+                        "peerManagerObject": "32",
+                        "cursor": "61"
+                    }
+                }
+            ]
+        },
+        "69": {
+            "name": "HostButton",
+            "parent": "68",
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "Host\n"
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "collider": "aabb",
+                        "aabb": {
+                            "extents": [
+                                1.0,
+                                0.20000000298023225,
+                                0.05000000074505806
+                            ]
+                        },
+                        "groups": 2
+                    }
+                },
+                {
+                    "type": "cursor-target"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                2.627169132232666,
+                0.0,
+                1.0
+            ]
+        },
+        "70": {
+            "name": "HostButtonBG",
+            "parent": "69",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.006454944610595703,
+                1.0
+            ]
+        },
+        "71": {
+            "name": "JoinButton",
+            "parent": "68",
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "Join\n"
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "collider": "aabb",
+                        "aabb": {
+                            "extents": [
+                                1.0,
+                                0.20000000298023225,
+                                0.05000000074505806
+                            ]
+                        },
+                        "groups": 2
+                    }
+                },
+                {
+                    "type": "cursor-target"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                2.0,
+                0.0,
+                1.0
+            ]
+        },
+        "72": {
+            "name": "JoinButtonBG",
+            "parent": "71",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.010487556457519532,
+                1.0
+            ]
+        },
+        "73": {
+            "name": "FloorCollision",
+            "parent": null,
+            "components": [
+                {
+                    "type": "collision",
+                    "collision": {
+                        "groups": 128,
+                        "collider": "aabb",
+                        "aabb": {
+                            "extents": [
+                                5.0,
+                                1.0,
+                                5.0
+                            ]
+                        }
+                    }
+                }
+            ],
+            "transformation": [
+                0.9999998807907105,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0000195503234864,
+                -0.00004088974674232304,
+                0.0,
+                0.0,
+                0.00004088894274900668,
+                0.9999998807907105,
+                0.0,
+                0.0,
+                -1.0,
+                0.0,
+                1.0
+            ]
+        },
+        "74": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                5.0,
+                1.01106595993042,
+                5.000007629394531,
+                1.0
+            ]
+        },
+        "75": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                0.0,
+                1.01106595993042,
+                5.000007629394531,
+                1.0
+            ]
+        },
+        "76": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                -5.0,
+                1.01106595993042,
+                5.000007629394531,
+                1.0
+            ]
+        },
+        "77": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                5.0,
+                1.0114750862121585,
+                -4.999993324279785,
+                1.0
+            ]
+        },
+        "78": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                0.0,
+                1.0114750862121585,
+                -4.999993324279785,
+                1.0
+            ]
+        },
+        "79": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                -5.0,
+                1.0114750862121585,
+                -4.999993324279785,
+                1.0
+            ]
+        },
+        "80": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                5.0,
+                1.0112706422805789,
+                0.00000749516038922593,
+                1.0
+            ]
+        },
+        "81": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                -5.0,
+                1.0112706422805789,
+                0.00000749516038922593,
+                1.0
+            ]
+        },
+        "84": {
+            "link": {
+                "name": "teleport-indicator",
+                "file": "glb\\teleport-indicator.glb"
+            },
+            "name": "TeleportIndicator",
+            "components": [
+                {
+                    "mesh": {
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.20000000298023225,
+                0.0,
+                0.0,
+                -0.4667310118675232,
+                9.313225746154786e-10,
+                1.0
+            ]
+        },
+        "85": {
+            "name": "Cursor",
+            "parent": "61",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                0.0020000000949949028,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0020000000949949028,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                -0.5,
+                1.0
+            ]
+        },
+        "86": {
+            "name": "Indicator",
+            "parent": "61",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "groups": 4,
+                        "sphere": {
+                            "radius": 0.07500000298023224
+                        }
+                    }
+                }
+            ],
+            "transformation": [
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.07500000298023224,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "87": {
+            "name": "CursorDot",
+            "parent": "61",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                0.009999999776482582,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.009999999776482582,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.009999999776482582,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "88": {
+            "name": "Environment",
+            "components": [
+                {
+                    "type": "howler-audio-source",
+                    "howler-audio-source": {
+                        "loop": true,
+                        "autoplay": true,
+                        "volume": 0.15000000596046449,
+                        "spatial": false,
+                        "src": "audio/infinitepeace.mp3"
+                    },
+                    "active": true
+                }
+            ]
+        },
+        "89": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                1.0663131475448609,
+                0.0,
+                0.5504328608512878,
+                0.0,
+                0.0,
+                1.200000047683716,
+                0.0,
+                0.0,
+                -0.5504328608512878,
+                0.0,
+                1.0663131475448609,
+                0.0,
+                -5.993932723999023,
+                1.4142706394195557,
+                7.732853889465332,
+                1.0
+            ]
+        },
+        "90": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                1.2975101470947266,
+                -0.0001859184703789651,
+                0.08042100816965103,
+                0.0,
+                0.0001855623122537509,
+                1.299999713897705,
+                0.000011501318113005256,
+                0.0,
+                -0.08042099326848984,
+                2.423802998585689e-11,
+                1.2975099086761477,
+                0.0,
+                8.449426651000977,
+                0.29177847504615786,
+                5.869330406188965,
+                1.0
+            ]
+        },
+        "91": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                0.4509131014347077,
+                0.0,
+                -0.21604841947555546,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                0.0,
+                0.2160485088825226,
+                0.0,
+                0.450913280248642,
+                0.0,
+                6.637430191040039,
+                0.311023622751236,
+                2.976958990097046,
+                1.0
+            ]
+        },
+        "92": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                2.971323013305664,
+                0.0010258998954668642,
+                0.41381213068962099,
+                0.0,
+                -0.0010358011350035668,
+                3.0,
+                1.6370906366636185e-11,
+                0.0,
+                -0.41381213068962099,
+                -0.0001428757095709443,
+                2.971323013305664,
+                0.0,
+                -10.42238712310791,
+                2.2617557048797609,
+                -9.329086303710938,
+                1.0
+            ]
+        },
+        "93": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                0.7395980954170227,
+                0.8644298911094666,
+                0.38178595900535586,
+                0.0,
+                -0.7681285738945007,
+                0.8323268294334412,
+                -0.3965093791484833,
+                0.0,
+                -0.550434947013855,
+                -0.000002610682713566348,
+                1.0663117170333865,
+                0.0,
+                -3.4153366088867189,
+                1.7105166912078858,
+                9.063982009887696,
+                1.0
+            ]
+        },
+        "94": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                1.575245022773743,
+                0.05663888528943062,
+                -1.2309932708740237,
+                0.0,
+                -0.07200216501951218,
+                1.9987034797668458,
+                -0.0001760479062795639,
+                0.0,
+                1.230190396308899,
+                0.04445575550198555,
+                1.5762628316879273,
+                0.0,
+                9.710368156433106,
+                1.253859281539917,
+                -1.1148993968963624,
+                1.0
+            ]
+        },
+        "95": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                0.3248697519302368,
+                0.05663897097110748,
+                -1.972612977027893,
+                0.0,
+                -0.05308448895812035,
+                1.9987022876739505,
+                0.04864557459950447,
+                0.0,
+                1.9727120399475096,
+                0.04445585981011391,
+                0.3261624574661255,
+                0.0,
+                5.323285102844238,
+                1.253860116004944,
+                -10.954776763916016,
+                1.0
+            ]
+        },
+        "96": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                5.0,
+                1.0111684799194337,
+                2.5000081062316896,
+                1.0
+            ]
+        },
+        "97": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                -5.0,
+                1.0111684799194337,
+                2.5000081062316896,
+                1.0
+            ]
+        },
+        "98": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                5.0,
+                1.0113729238510132,
+                -2.4999921321868898,
+                1.0
+            ]
+        },
+        "99": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                -5.0,
+                1.0113729238510132,
+                -2.4999921321868898,
+                1.0
+            ]
+        },
+        "100": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                -2.500000238418579,
+                1.01106595993042,
+                5.000007629394531,
+                1.0
+            ]
+        },
+        "101": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                -2.500000238418579,
+                1.0114750862121585,
+                -4.999993324279785,
+                1.0
+            ]
+        },
+        "102": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                2.500000238418579,
+                1.01106595993042,
+                5.000007629394531,
+                1.0
+            ]
+        },
+        "103": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.10000000149011612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.10000000149011612,
+                1.0004441719502209e-11,
+                0.0,
+                0.0,
+                -1.0004441719502209e-11,
+                0.10000000149011612,
+                0.0,
+                2.500000238418579,
+                1.0114750862121585,
+                -4.999993324279785,
+                1.0
+            ]
+        },
+        "109": {
+            "link": {
+                "name": "barrel_biohazard_$AssimpFbx$_PreRotation",
+                "file": "glb\\Barrel_01.FBX"
+            },
+            "deleted": true
+        },
+        "110": {
+            "link": {
+                "name": "barrel_biohazard_$AssimpFbx$_Rotation<barrel_biohazard_$AssimpFbx$_PreRotation",
+                "file": "glb\\Barrel_01.FBX"
+            },
+            "parent": "109",
+            "deleted": true
+        },
+        "111": {
+            "link": {
+                "name": "barrel_biohazard<barrel_biohazard_$AssimpFbx$_Rotation<barrel_biohazard_$AssimpFbx$_PreRotation",
+                "file": "glb\\Barrel_01.FBX"
+            },
+            "parent": "110",
+            "components": [
+                {
+                    "mesh": {
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                0.009631700813770296,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1481839923277447e-9,
+                -0.009631664492189885,
+                0.0,
+                0.0,
+                0.009631664492189885,
+                -1.1481839923277447e-9,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "112": {
+            "name": "Drum",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "108",
+                        "material": "25"
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "collider": "aabb",
+                        "aabb": {
+                            "extents": [
+                                0.33000001311302187,
+                                1.0199999809265137,
+                                0.33000001311302187
+                            ]
+                        },
+                        "groups": 4
+                    }
+                },
+                {
+                    "type": "howler-audio-source",
+                    "howler-audio-source": {
+                        "src": "audio/toms.wav",
+                        "volume": 0.4000000059604645
+                    }
+                },
+                {
+                    "type": "drum",
+                    "drum": {
+                        "networkObject": "32"
+                    }
+                }
+            ],
+            "transformation": [
+                0.009999999776482582,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920863185466147e-9,
+                -0.009999943897128106,
+                0.0,
+                0.0,
+                0.009999998845160008,
+                -1.19209286886246e-9,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        }
+    },
+    "meshes": {
+        "7": {
+            "link": {
+                "name": "PrimitivePlane",
+                "file": "default"
+            }
+        },
+        "8": {
+            "link": {
+                "name": "PrimitiveCube",
+                "file": "default"
+            }
+        },
+        "9": {
+            "link": {
+                "name": "PrimitiveSphere",
+                "file": "default"
+            }
+        },
+        "10": {
+            "link": {
+                "name": "PrimitiveCone",
+                "file": "default"
+            }
+        },
+        "11": {
+            "link": {
+                "name": "PrimitiveCylinder",
+                "file": "default"
+            }
+        },
+        "12": {
+            "link": {
+                "name": "PrimitiveCircle",
+                "file": "default"
+            }
+        },
+        "83": {
+            "link": {
+                "name": "teleport-indicator-mesh",
+                "file": "glb\\teleport-indicator.glb"
+            }
+        },
+        "108": {
+            "link": {
+                "name": "mesh_0",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        }
+    },
+    "textures": {
+        "t0": {
+            "link": {
+                "name": "DefaultFont",
+                "file": "default"
+            },
+            "name": "DefaultFont"
+        },
+        "104": {
+            "link": {
+                "name": "texture_0",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "105": {
+            "link": {
+                "name": "texture_1",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "106": {
+            "link": {
+                "name": "texture_2",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        }
+    },
+    "images": {
+        "f0": {
+            "link": {
+                "name": "DefaultFontImage",
+                "file": "default"
+            }
+        }
+    },
+    "materials": {
+        "DefaultFontMaterial": {
+            "link": {
+                "name": "DefaultFontMaterial",
+                "file": "default"
+            }
+        },
+        "20": {
+            "name": "White",
+            "shader": "Phong",
+            "Phong": {
+                "specularColor": [
+                    9.999899930335233e-7,
+                    9.99993744699168e-7,
+                    9.999999974752428e-7,
+                    1.0
+                ],
+                "shininess": 1
+            }
+        },
+        "22": {
+            "name": "Pink",
+            "Phong": {
+                "diffuseColor": [
+                    0.9098039269447328,
+                    0.0,
+                    0.5411764979362488,
+                    0.0
+                ],
+                "specularColor": [
+                    9.999899930335233e-7,
+                    9.999911299019005e-7,
+                    9.999999974752428e-7,
+                    1.0
+                ],
+                "shininess": 10,
+                "ambientColor": [
+                    0.3176470398902893,
+                    0.0,
+                    0.2165777683258057,
+                    1.0
+                ]
+            }
+        },
+        "25": {
+            "name": "Yellow",
+            "Phong": {
+                "diffuseColor": [
+                    1.0,
+                    0.8039215803146362,
+                    0.0,
+                    1.0
+                ],
+                "specularColor": [
+                    9.999999974752428e-7,
+                    9.999899930335233e-7,
+                    9.999899930335233e-7,
+                    1.0
+                ],
+                "ambientColor": [
+                    0.384313702583313,
+                    0.3089579045772553,
+                    0.0,
+                    1.0
+                ]
+            }
+        },
+        "26": {
+            "name": "Green",
+            "Phong": {
+                "diffuseColor": [
+                    0.15294118225574494,
+                    0.7882353067398071,
+                    0.5411764979362488,
+                    1.0
+                ],
+                "specularColor": [
+                    9.999999974752428e-7,
+                    9.999899930335233e-7,
+                    9.999899930335233e-7,
+                    1.0
+                ],
+                "ambientColor": [
+                    0.0,
+                    0.23529410362243653,
+                    0.1437908560037613,
+                    1.0
+                ]
+            }
+        },
+        "107": {
+            "link": {
+                "name": "barrel_biohazard_mat",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        }
+    },
+    "shaders": {
+        "1": {
+            "link": {
+                "name": "DistanceFieldVector Textured",
+                "file": "default"
+            }
+        },
+        "2": {
+            "link": {
+                "name": "Flat",
+                "file": "default"
+            }
+        },
+        "3": {
+            "link": {
+                "name": "Flat Textured",
+                "file": "default"
+            }
+        },
+        "4": {
+            "link": {
+                "name": "MeshVisualizer",
+                "file": "default"
+            }
+        },
+        "5": {
+            "link": {
+                "name": "Phong",
+                "file": "default"
+            }
+        },
+        "6": {
+            "link": {
+                "name": "Phong Textured",
+                "file": "default"
+            }
+        },
+        "28": {
+            "link": {
+                "name": "Dynamic",
+                "file": "default"
+            }
+        },
+        "29": {
+            "link": {
+                "name": "Particle Textured",
+                "file": "default"
+            }
+        },
+        "30": {
+            "link": {
+                "name": "Skinning",
+                "file": "default"
+            }
+        },
+        "31": {
+            "link": {
+                "name": "Static",
+                "file": "default"
+            }
+        }
+    },
+    "settings": {
+        "project": {
+            "name": "PeerTest",
+            "version": [
+                0,
+                8,
+                4
+            ]
+        },
+        "vr": {
+            "leftEyeObject": "18",
+            "rightEyeObject": "19"
+        },
+        "scripting": {
+            "sourcePaths": [
+                "/js/components/",
+                "js"
+            ]
+        },
+        "rendering": {
+            "clearColor": [
+                0.20000000298023225,
+                0.20000000298023225,
+                0.20000000298023225,
+                1.0
+            ]
+        },
+        "runtime": {
+            "webxr": {
+                "requiredFeatures": {
+                    "local": false,
+                    "local-floor": true,
+                    "bounded-floor": false
+                },
+                "optionalFeatures": {
+                    "local": false,
+                    "local-floor": true,
+                    "bounded-floor": false
+                }
+            }
+        }
+    },
+    "animations": {},
+    "skins": {},
+    "files": [
+        "glb/teleport-indicator.glb",
+        "glb/Barrel_01.FBX"
+    ]
+}
