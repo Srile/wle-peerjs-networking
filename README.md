@@ -60,6 +60,6 @@ You can add meshes to each object for visualisastion, if you like. We can now co
 ### Possible future improvements:
 - Expanding pool: Allows more users to join then the defined amount in the scene via dynamically expanding (and perhaps shrinking) the pool.
 
-###Credits
+### Credits
 peer.js  - Copyright (c) 2015 Michelle Bu and Eric Zhang, http://peerjs.com
 Tone.js - Copyright (c) 2014-2020 Yotam Mann https://github.com/Tonejs/Tone.js
