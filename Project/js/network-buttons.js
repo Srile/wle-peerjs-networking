@@ -27,13 +27,15 @@ WL.registerComponent('network-buttons', {
       this.pm.addDisconnectCallback(this.show.bind(this));
     },
     show: function() {
-      this.cursor.getComponent('cursor').setEnabled(true);
+      if(this.cursor.getComponent('cursor').setEnabled)
+        this.cursor.getComponent('cursor').setEnabled(true);
       this.hostButtonCollider.active = true;
       this.joinButtonCollider.active = true;
       this.object.setTranslationLocal([0,0,-3])
     },
     hide: function() {
-      this.cursor.getComponent('cursor').setEnabled(false);
+      if(this.cursor.getComponent('cursor').setEnabled)
+        this.cursor.getComponent('cursor').setEnabled(false);
       this.hostButtonCollider.active = false;
       this.joinButtonCollider.active = false;
       this.object.setTranslationLocal([0,-300,0])

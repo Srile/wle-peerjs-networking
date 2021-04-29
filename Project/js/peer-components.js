@@ -152,10 +152,10 @@ WL.registerComponent('peer-manager', {
       delete this.connection;
     },
     _onClientConnected: function() {
+      this.call(this.serverId);
       for (let i = 0; i < this.connectionEstablishedCallbacks.length; i++) {
         this.connectionEstablishedCallbacks[i]();
       }
-      this.call(this.serverId);
     },
     _onClientDataRecieved: function(data) {
       let registeredCallbacksKeys = Object.keys(this.registeredNetworkCallbacks);
