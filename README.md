@@ -10,6 +10,8 @@ This repository includes a basic scene that you can use as a template for your p
 
 You can reference the included `example-scene.wlp` scene for the setup.
 
+> Please copy the `audio` folder into `deploy`, if you are working with `example-scene.wlp`
+
 Using the default Wonderland Engine setup, after adding the hand objects, you should have the following scene structure for the user:
 
 	Player
