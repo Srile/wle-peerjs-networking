@@ -41,7 +41,10 @@ WL.registerComponent('peer-manager', {
         if(!this.registeredNetworkCallbacks) this.registeredNetworkCallbacks = {};
     },
     start: function() {
-      this.networkPlayerPoolComponent = this.networkPlayerPool.getComponent('peer-networked-player-pool');
+      /* Try to get one of the two types of spawner component */
+      this.networkPlayerSpawner =
+        this.networkPlayerPool.getComponent('peer-networked-player-pool') ||
+        this.networkPlayerPool.getComponent('peer-networked-player-spawner');
     },
     //
     // Host functions
@@ -110,7 +113,7 @@ WL.registerComponent('peer-manager', {
       this.currentDataPackage["disconnect"].push(connection.peer);
     },
     _hostPlayerJoined: function(id) {
-      let newPlayer = this.networkPlayerPoolComponent.getEntity();
+      let newPlayer = this.networkPlayerSpawner.getEntity();
       this.activePlayers[id] = newPlayer;
       if(!this.currentDataPackage.joinedPlayers) {
         this.currentDataPackage.joinedPlayers = [];
@@ -174,7 +177,7 @@ WL.registerComponent('peer-manager', {
                 this.call(data.joinedPlayers[currentIndex]);
               }.bind(this), Math.floor(500 * j));
             }
-            let newPlayer = this.networkPlayerPoolComponent.getEntity();
+            let newPlayer = this.networkPlayerSpawner.getEntity();
             this.activePlayers[data.joinedPlayers[j]] = newPlayer;
           }
         } else {
@@ -224,7 +227,7 @@ WL.registerComponent('peer-manager', {
       }
       if(this.activePlayers[peerId]) {
         this.activePlayers[peerId].reset();
-        this.networkPlayerPoolComponent.returnEntity(this.activePlayers[peerId]);
+        this.networkPlayerSpawner.returnEntity(this.activePlayers[peerId]);
         delete this.activePlayers[peerId];
       }
     },
@@ -367,8 +370,7 @@ WL.registerComponent('peer-networked-player-pool', {
 WL.registerComponent('peer-networked-player', {
 }, {
     init: function() {
-      for (let i = 0; i < this.object.children.length; i++) {
-        let currentChild = this.object.children[i];
+      for (let currentChild of this.object.children) {
         switch(currentChild.name) {
           case "Head":
             this.head = currentChild;
@@ -395,4 +397,50 @@ WL.registerComponent('peer-networked-player', {
       this.leftHand.transformLocal.set(new Float32Array(transforms.leftHand));
       this.leftHand.setDirty();
     }
+});
+
+WL.registerComponent('peer-networked-player-spawner', {
+  headMesh: {type: WL.Type.Mesh},
+  headMaterial: {type: WL.Type.Material},
+  leftHandMesh: {type: WL.Type.Mesh},
+  leftHandMaterial: {type: WL.Type.Material},
+  rightHandMesh: {type: WL.Type.Mesh},
+  rightHandMaterial: {type: WL.Type.Material},
+}, {
+  init: function() {
+    this.count = 0;
+  },
+
+  getEntity: function() {
+    const player = WL.scene.addObject(1);
+    const children = WL.scene.addObjects(3, player);
+
+    children[0].name = 'Head';
+    children[0].addComponent('mesh', {
+      mesh: this.headMesh,
+      material: this.headMaterial,
+    });
+
+    children[1].name = 'LeftHand';
+    children[1].addComponent('mesh', {
+      mesh: this.leftHandMesh,
+      material: this.leftHandMaterial,
+    });
+
+    children[2].name = 'RightHand';
+    children[2].addComponent('mesh', {
+      mesh: this.rightHandMesh,
+      material: this.rightHandMaterial,
+    });
+
+    player.name = `Player ${this.count++}`;
+    return player.addComponent('peer-networked-player');
+  },
+
+  returnEntity: function(player) {
+    player.children.forEach(c => {
+      c.active = false;
+    });
+    player.active = false;
+  }
 });
