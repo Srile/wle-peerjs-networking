@@ -1,0 +1,3565 @@
+{
+    "objects": {
+        "14": {
+            "name": "Player",
+            "components": [
+                {
+                    "type": "wasd-controls",
+                    "wasd-controls": {
+                        "headObject": "17"
+                    }
+                }
+            ],
+            "transformation": [
+                0.7160133,
+                0.0,
+                0.6980865,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                -0.6980865,
+                0.0,
+                0.7160133,
+                0.0,
+                -3.2591099,
+                0.0,
+                1.7569212,
+                1.0
+            ]
+        },
+        "15": {
+            "name": "FloorPlane",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                300.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.124884,
+                -300.001007,
+                0.0,
+                0.0,
+                300.000061,
+                -0.1248836,
+                0.0,
+                0.0,
+                0.0,
+                0.0000061,
+                1.0
+            ]
+        },
+        "16": {
+            "name": "Cube",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                2.9802322387695329e-8,
+                0.4999999,
+                5.960464477539065e-8,
+                1.0
+            ],
+            "deleted": true
+        },
+        "17": {
+            "name": "NonVrCamera",
+            "parent": "14",
+            "components": [
+                {
+                    "type": "view"
+                },
+                {
+                    "type": "mouse-look"
+                },
+                {
+                    "type": "cursor"
+                }
+            ]
+        },
+        "18": {
+            "name": "EyeLeft",
+            "parent": "14",
+            "components": [
+                {
+                    "type": "view"
+                },
+                {
+                    "type": "input",
+                    "input": {
+                        "type": "eye left"
+                    }
+                }
+            ]
+        },
+        "19": {
+            "name": "EyeRight",
+            "parent": "14",
+            "components": [
+                {
+                    "type": "view"
+                },
+                {
+                    "type": "input",
+                    "input": {
+                        "type": "eye right"
+                    }
+                },
+                {
+                    "type": "howler-audio-listener"
+                }
+            ]
+        },
+        "21": {
+            "name": "Light",
+            "components": [
+                {
+                    "type": "light",
+                    "light": {
+                        "attenuation": 0.1
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                3.0,
+                2.0,
+                1.0
+            ]
+        },
+        "23": {
+            "name": "Light.000",
+            "components": [
+                {
+                    "type": "light",
+                    "light": {
+                        "attenuation": 0.1
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                -1.0,
+                3.0,
+                -1.0,
+                1.0
+            ]
+        },
+        "24": {
+            "name": "Cone",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "10",
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                1.5,
+                1.0,
+                -1.4901161193847657e-8,
+                1.0
+            ],
+            "deleted": true
+        },
+        "27": {
+            "name": "Sphere",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.75,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.75,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.75,
+                0.0,
+                0.4999999,
+                0.75,
+                -1.25,
+                1.0
+            ],
+            "deleted": true
+        },
+        "32": {
+            "name": "PeerNetworkedPlayerSpawner",
+            "components": [
+                {
+                    "type": "peer-manager",
+                    "peer-manager": {
+                        "playerHead": "19",
+                        "networkPlayerPool": "32",
+                        "networkSendFrequencyInS": 0.0099999,
+                        "playerRightHand": "61",
+                        "playerLeftHand": "62",
+                        "serverId": "WLENET-ULIM"
+                    }
+                },
+                {
+                    "type": "peer-networked-player-spawner",
+                    "peer-networked-player-spawner": {
+                        "headMesh": "131",
+                        "leftHandMesh": "222",
+                        "rightHandMesh": "223",
+                        "headMaterial": "130",
+                        "leftHandMaterial": "220",
+                        "rightHandMaterial": "221"
+                    }
+                }
+            ]
+        },
+        "33": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "34": {
+            "name": "Head",
+            "parent": "33",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "35": {
+            "name": "LeftHand",
+            "parent": "33",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.4507295,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.4507295,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.4507295,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "36": {
+            "name": "LeftHand",
+            "parent": "33",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "37": {
+            "name": "RightHand",
+            "parent": "33",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "38": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "39": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "40": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "41": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "42": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "43": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "44": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "deleted": true
+        },
+        "45": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "46": {
+            "name": "Head",
+            "parent": "45",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "47": {
+            "name": "LeftHand",
+            "parent": "45",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "48": {
+            "name": "RightHand",
+            "parent": "45",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "49": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "50": {
+            "name": "Head",
+            "parent": "49",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "51": {
+            "name": "LeftHand",
+            "parent": "49",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "52": {
+            "name": "RightHand",
+            "parent": "49",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "53": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "54": {
+            "name": "Head",
+            "parent": "53",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "55": {
+            "name": "LeftHand",
+            "parent": "53",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "56": {
+            "name": "RightHand",
+            "parent": "53",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "57": {
+            "name": "PeerNetworkedPlayer",
+            "parent": "32",
+            "components": [
+                {
+                    "type": "peer-networked-player"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "58": {
+            "name": "Head",
+            "parent": "57",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "59": {
+            "name": "LeftHand",
+            "parent": "57",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "60": {
+            "name": "RightHand",
+            "parent": "57",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "61": {
+            "name": "RightHand",
+            "parent": "14",
+            "components": [
+                {
+                    "type": "input",
+                    "input": {
+                        "type": "ray right"
+                    }
+                },
+                {
+                    "type": "cursor",
+                    "cursor": {
+                        "cursorRayObject": "85",
+                        "cursorObject": "87",
+                        "handedness": "right"
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "62": {
+            "name": "LeftHand",
+            "parent": "14",
+            "components": [
+                {
+                    "type": "input",
+                    "input": {
+                        "type": "ray left"
+                    }
+                },
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                },
+                {
+                    "type": "controller-teleport-component",
+                    "controller-teleport-component": {
+                        "teleportIndicatorMeshObject": "84",
+                        "camRoot": "14",
+                        "cam": "18",
+                        "floorGroup": 7
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "sphere": {
+                            "radius": 0.075
+                        },
+                        "groups": 4
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "63": {
+            "name": "Mesh",
+            "parent": "34",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "64": {
+            "name": "Mesh",
+            "parent": "46",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "65": {
+            "name": "Mesh",
+            "parent": "54",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "66": {
+            "name": "Mesh",
+            "parent": "50",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "67": {
+            "name": "Mesh",
+            "parent": "58",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                }
+            ],
+            "transformation": [
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0999999,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "68": {
+            "name": "NetworkButtonContainer",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                -3.0,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "network-buttons",
+                    "network-buttons": {
+                        "peerManagerObject": "32",
+                        "cursor": "61"
+                    }
+                }
+            ]
+        },
+        "69": {
+            "name": "HostButton",
+            "parent": "68",
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "Host\n"
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "collider": "aabb",
+                        "aabb": {
+                            "extents": [
+                                1.0,
+                                0.2,
+                                0.05
+                            ]
+                        },
+                        "groups": 2
+                    }
+                },
+                {
+                    "type": "cursor-target"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                2.6271691,
+                0.0,
+                1.0
+            ]
+        },
+        "70": {
+            "name": "HostButtonBG",
+            "parent": "69",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0064549,
+                1.0
+            ]
+        },
+        "71": {
+            "name": "JoinButton",
+            "parent": "68",
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "Join\n"
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "collider": "aabb",
+                        "aabb": {
+                            "extents": [
+                                1.0,
+                                0.2,
+                                0.05
+                            ]
+                        },
+                        "groups": 2
+                    }
+                },
+                {
+                    "type": "cursor-target"
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                2.0,
+                0.0,
+                1.0
+            ]
+        },
+        "72": {
+            "name": "JoinButtonBG",
+            "parent": "71",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0104875,
+                1.0
+            ]
+        },
+        "73": {
+            "name": "FloorCollision",
+            "parent": null,
+            "components": [
+                {
+                    "type": "collision",
+                    "collision": {
+                        "groups": 128,
+                        "collider": "aabb",
+                        "aabb": {
+                            "extents": [
+                                5.0,
+                                1.0,
+                                5.0
+                            ]
+                        }
+                    }
+                }
+            ],
+            "transformation": [
+                0.9999998,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0000195,
+                -0.0000408,
+                0.0,
+                0.0,
+                0.0000408,
+                0.9999998,
+                0.0,
+                0.0,
+                -1.0,
+                0.0,
+                1.0
+            ]
+        },
+        "74": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                5.0,
+                1.0110659,
+                5.0000076,
+                1.0
+            ]
+        },
+        "75": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                0.0,
+                1.0110659,
+                5.0000076,
+                1.0
+            ]
+        },
+        "76": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                -5.0,
+                1.0110659,
+                5.0000076,
+                1.0
+            ]
+        },
+        "77": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                5.0,
+                1.011475,
+                -4.9999933,
+                1.0
+            ]
+        },
+        "78": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                0.0,
+                1.011475,
+                -4.9999933,
+                1.0
+            ]
+        },
+        "79": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                -5.0,
+                1.011475,
+                -4.9999933,
+                1.0
+            ]
+        },
+        "80": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                5.0,
+                1.0112706,
+                0.0000074,
+                1.0
+            ]
+        },
+        "81": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                -5.0,
+                1.0112706,
+                0.0000074,
+                1.0
+            ]
+        },
+        "84": {
+            "link": {
+                "name": "teleport-indicator",
+                "file": "glb\\teleport-indicator.glb"
+            },
+            "name": "TeleportIndicator",
+            "components": [
+                {
+                    "mesh": {
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                -0.466731,
+                0.0,
+                1.0
+            ]
+        },
+        "85": {
+            "name": "Cursor",
+            "parent": "61",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                0.002,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.002,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                -0.5,
+                1.0
+            ]
+        },
+        "86": {
+            "name": "Indicator",
+            "parent": "61",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "22"
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "groups": 4,
+                        "sphere": {
+                            "radius": 0.075
+                        }
+                    }
+                }
+            ],
+            "transformation": [
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.075,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "87": {
+            "name": "CursorDot",
+            "parent": "61",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "9",
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "88": {
+            "name": "Environment",
+            "components": [
+                {
+                    "type": "howler-audio-source",
+                    "howler-audio-source": {
+                        "loop": true,
+                        "autoplay": true,
+                        "volume": 0.15,
+                        "spatial": false,
+                        "src": "audio/infinitepeace.mp3"
+                    },
+                    "active": true
+                }
+            ]
+        },
+        "89": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                1.0663131,
+                0.0,
+                0.5504328,
+                0.0,
+                0.0,
+                1.2,
+                0.0,
+                0.0,
+                -0.5504328,
+                0.0,
+                1.0663131,
+                0.0,
+                -5.9939327,
+                1.4142706,
+                7.7328538,
+                1.0
+            ]
+        },
+        "90": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                1.2975101,
+                -0.0001859,
+                0.080421,
+                0.0,
+                0.0001855,
+                1.2999997,
+                0.0000115,
+                0.0,
+                -0.0804209,
+                0.0,
+                1.2975099,
+                0.0,
+                8.4494266,
+                0.2917784,
+                5.8693304,
+                1.0
+            ]
+        },
+        "91": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                0.4509131,
+                0.0,
+                -0.2160484,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                0.0,
+                0.2160485,
+                0.0,
+                0.4509132,
+                0.0,
+                6.6374301,
+                0.3110236,
+                2.9769589,
+                1.0
+            ]
+        },
+        "92": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                2.971323,
+                0.0010258,
+                0.4138121,
+                0.0,
+                -0.0010358,
+                3.0,
+                0.0,
+                0.0,
+                -0.4138121,
+                -0.0001428,
+                2.971323,
+                0.0,
+                -10.4223871,
+                2.2617557,
+                -9.3290863,
+                1.0
+            ]
+        },
+        "93": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                0.739598,
+                0.8644298,
+                0.3817859,
+                0.0,
+                -0.7681285,
+                0.8323268,
+                -0.3965093,
+                0.0,
+                -0.5504349,
+                -0.0000026,
+                1.0663117,
+                0.0,
+                -3.4153366,
+                1.7105166,
+                9.063982,
+                1.0
+            ]
+        },
+        "94": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "20"
+                    }
+                }
+            ],
+            "transformation": [
+                1.575245,
+                0.0566388,
+                -1.2309932,
+                0.0,
+                -0.0720021,
+                1.9987034,
+                -0.000176,
+                0.0,
+                1.2301903,
+                0.0444557,
+                1.5762628,
+                0.0,
+                9.7103681,
+                1.2538592,
+                -1.1148993,
+                1.0
+            ]
+        },
+        "95": {
+            "name": "Cube",
+            "parent": "88",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                0.3248697,
+                0.0566389,
+                -1.9726129,
+                0.0,
+                -0.0530844,
+                1.9987022,
+                0.0486455,
+                0.0,
+                1.972712,
+                0.0444558,
+                0.3261624,
+                0.0,
+                5.3232851,
+                1.2538601,
+                -10.9547767,
+                1.0
+            ]
+        },
+        "96": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                5.0,
+                1.0111684,
+                2.5000081,
+                1.0
+            ]
+        },
+        "97": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                -5.0,
+                1.0111684,
+                2.5000081,
+                1.0
+            ]
+        },
+        "98": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                5.0,
+                1.0113729,
+                -2.4999921,
+                1.0
+            ]
+        },
+        "99": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                -5.0,
+                1.0113729,
+                -2.4999921,
+                1.0
+            ]
+        },
+        "100": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                -2.5000002,
+                1.0110659,
+                5.0000076,
+                1.0
+            ]
+        },
+        "101": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                -2.5000002,
+                1.011475,
+                -4.9999933,
+                1.0
+            ]
+        },
+        "102": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                2.5000002,
+                1.0110659,
+                5.0000076,
+                1.0
+            ]
+        },
+        "103": {
+            "name": "Limit",
+            "parent": "73",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "8",
+                        "material": "26"
+                    }
+                }
+            ],
+            "transformation": [
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.1,
+                0.0,
+                2.5000002,
+                1.011475,
+                -4.9999933,
+                1.0
+            ]
+        },
+        "109": {
+            "link": {
+                "name": "barrel_biohazard_$AssimpFbx$_PreRotation",
+                "file": "glb\\Barrel_01.FBX"
+            },
+            "deleted": true
+        },
+        "110": {
+            "link": {
+                "name": "barrel_biohazard_$AssimpFbx$_Rotation<barrel_biohazard_$AssimpFbx$_PreRotation",
+                "file": "glb\\Barrel_01.FBX"
+            },
+            "parent": "109",
+            "deleted": true
+        },
+        "111": {
+            "link": {
+                "name": "barrel_biohazard<barrel_biohazard_$AssimpFbx$_Rotation<barrel_biohazard_$AssimpFbx$_PreRotation",
+                "file": "glb\\Barrel_01.FBX"
+            },
+            "parent": "110",
+            "components": [
+                {
+                    "mesh": {
+                        "material": "25"
+                    }
+                }
+            ],
+            "transformation": [
+                0.0096317,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                -0.0096316,
+                0.0,
+                0.0,
+                0.0096316,
+                -0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "112": {
+            "name": "Drum",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "108",
+                        "material": "25"
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "collider": "aabb",
+                        "aabb": {
+                            "extents": [
+                                0.33,
+                                1.0199999,
+                                0.33
+                            ]
+                        },
+                        "groups": 4
+                    }
+                },
+                {
+                    "type": "howler-audio-source",
+                    "howler-audio-source": {
+                        "src": "audio/toms.wav",
+                        "volume": 0.4
+                    }
+                },
+                {
+                    "type": "drum",
+                    "drum": {
+                        "networkObject": "32"
+                    }
+                }
+            ],
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                -0.0099999,
+                0.0,
+                0.0,
+                0.0099999,
+                -0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "132": {
+            "link": {
+                "name": "group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "deleted": true
+        },
+        "133": {
+            "link": {
+                "name": "group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "132",
+            "deleted": true
+        },
+        "134": {
+            "link": {
+                "name": "group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "133",
+            "deleted": true
+        },
+        "135": {
+            "link": {
+                "name": "group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "134",
+            "deleted": true
+        },
+        "136": {
+            "link": {
+                "name": "group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "135",
+            "deleted": true
+        },
+        "137": {
+            "link": {
+                "name": "pCube10_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "138": {
+            "link": {
+                "name": "pCube10_$AssimpFbx$_RotationPivotInverse<pCube10_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "137",
+            "deleted": true
+        },
+        "139": {
+            "link": {
+                "name": "pCube10_$AssimpFbx$_ScalingPivot<pCube10_$AssimpFbx$_RotationPivotInverse<pCube10_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "138",
+            "deleted": true
+        },
+        "140": {
+            "link": {
+                "name": "pCube10_$AssimpFbx$_ScalingPivotInverse<pCube10_$AssimpFbx$_ScalingPivot<pCube10_$AssimpFbx$_RotationPivotInverse<pCube10_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "139",
+            "deleted": true
+        },
+        "141": {
+            "link": {
+                "name": "pCube10<pCube10_$AssimpFbx$_ScalingPivotInverse<pCube10_$AssimpFbx$_ScalingPivot<pCube10_$AssimpFbx$_RotationPivotInverse<pCube10_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "140",
+            "deleted": true
+        },
+        "142": {
+            "link": {
+                "name": "transform19<pCube10<pCube10_$AssimpFbx$_ScalingPivotInverse<pCube10_$AssimpFbx$_ScalingPivot<pCube10_$AssimpFbx$_RotationPivotInverse<pCube10_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "141",
+            "deleted": true
+        },
+        "143": {
+            "link": {
+                "name": "pCylinder1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "144": {
+            "link": {
+                "name": "pCylinder1_$AssimpFbx$_RotationPivotInverse<pCylinder1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "143",
+            "deleted": true
+        },
+        "145": {
+            "link": {
+                "name": "pCylinder1_$AssimpFbx$_ScalingPivot<pCylinder1_$AssimpFbx$_RotationPivotInverse<pCylinder1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "144",
+            "deleted": true
+        },
+        "146": {
+            "link": {
+                "name": "pCylinder1_$AssimpFbx$_ScalingPivotInverse<pCylinder1_$AssimpFbx$_ScalingPivot<pCylinder1_$AssimpFbx$_RotationPivotInverse<pCylinder1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "145",
+            "deleted": true
+        },
+        "147": {
+            "link": {
+                "name": "pCylinder1<pCylinder1_$AssimpFbx$_ScalingPivotInverse<pCylinder1_$AssimpFbx$_ScalingPivot<pCylinder1_$AssimpFbx$_RotationPivotInverse<pCylinder1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "146",
+            "deleted": true
+        },
+        "148": {
+            "link": {
+                "name": "transform9<pCylinder1<pCylinder1_$AssimpFbx$_ScalingPivotInverse<pCylinder1_$AssimpFbx$_ScalingPivot<pCylinder1_$AssimpFbx$_RotationPivotInverse<pCylinder1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "147",
+            "deleted": true
+        },
+        "149": {
+            "link": {
+                "name": "loftedSurface5_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "150": {
+            "link": {
+                "name": "loftedSurface5_$AssimpFbx$_RotationPivotInverse<loftedSurface5_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "149",
+            "deleted": true
+        },
+        "151": {
+            "link": {
+                "name": "loftedSurface5_$AssimpFbx$_ScalingPivot<loftedSurface5_$AssimpFbx$_RotationPivotInverse<loftedSurface5_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "150",
+            "deleted": true
+        },
+        "152": {
+            "link": {
+                "name": "loftedSurface5_$AssimpFbx$_ScalingPivotInverse<loftedSurface5_$AssimpFbx$_ScalingPivot<loftedSurface5_$AssimpFbx$_RotationPivotInverse<loftedSurface5_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "151",
+            "deleted": true
+        },
+        "153": {
+            "link": {
+                "name": "loftedSurface5<loftedSurface5_$AssimpFbx$_ScalingPivotInverse<loftedSurface5_$AssimpFbx$_ScalingPivot<loftedSurface5_$AssimpFbx$_RotationPivotInverse<loftedSurface5_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "152",
+            "deleted": true
+        },
+        "154": {
+            "link": {
+                "name": "transform14<loftedSurface5<loftedSurface5_$AssimpFbx$_ScalingPivotInverse<loftedSurface5_$AssimpFbx$_ScalingPivot<loftedSurface5_$AssimpFbx$_RotationPivotInverse<loftedSurface5_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "153",
+            "deleted": true
+        },
+        "155": {
+            "link": {
+                "name": "pCube3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "156": {
+            "link": {
+                "name": "pCube3_$AssimpFbx$_RotationPivotInverse<pCube3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "155",
+            "deleted": true
+        },
+        "157": {
+            "link": {
+                "name": "pCube3_$AssimpFbx$_ScalingPivot<pCube3_$AssimpFbx$_RotationPivotInverse<pCube3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "156",
+            "deleted": true
+        },
+        "158": {
+            "link": {
+                "name": "pCube3_$AssimpFbx$_ScalingPivotInverse<pCube3_$AssimpFbx$_ScalingPivot<pCube3_$AssimpFbx$_RotationPivotInverse<pCube3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "157",
+            "deleted": true
+        },
+        "159": {
+            "link": {
+                "name": "pCube3<pCube3_$AssimpFbx$_ScalingPivotInverse<pCube3_$AssimpFbx$_ScalingPivot<pCube3_$AssimpFbx$_RotationPivotInverse<pCube3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "158",
+            "deleted": true
+        },
+        "160": {
+            "link": {
+                "name": "transform10<pCube3<pCube3_$AssimpFbx$_ScalingPivotInverse<pCube3_$AssimpFbx$_ScalingPivot<pCube3_$AssimpFbx$_RotationPivotInverse<pCube3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "159",
+            "deleted": true
+        },
+        "161": {
+            "link": {
+                "name": "pCube2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "162": {
+            "link": {
+                "name": "pCube2_$AssimpFbx$_RotationPivotInverse<pCube2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "161",
+            "deleted": true
+        },
+        "163": {
+            "link": {
+                "name": "pCube2_$AssimpFbx$_ScalingPivot<pCube2_$AssimpFbx$_RotationPivotInverse<pCube2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "162",
+            "deleted": true
+        },
+        "164": {
+            "link": {
+                "name": "pCube2_$AssimpFbx$_ScalingPivotInverse<pCube2_$AssimpFbx$_ScalingPivot<pCube2_$AssimpFbx$_RotationPivotInverse<pCube2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "163",
+            "deleted": true
+        },
+        "165": {
+            "link": {
+                "name": "pCube2<pCube2_$AssimpFbx$_ScalingPivotInverse<pCube2_$AssimpFbx$_ScalingPivot<pCube2_$AssimpFbx$_RotationPivotInverse<pCube2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "164",
+            "deleted": true
+        },
+        "166": {
+            "link": {
+                "name": "transform17<pCube2<pCube2_$AssimpFbx$_ScalingPivotInverse<pCube2_$AssimpFbx$_ScalingPivot<pCube2_$AssimpFbx$_RotationPivotInverse<pCube2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "165",
+            "deleted": true
+        },
+        "167": {
+            "link": {
+                "name": "pPipe1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "168": {
+            "link": {
+                "name": "pPipe1_$AssimpFbx$_RotationPivotInverse<pPipe1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "167",
+            "deleted": true
+        },
+        "169": {
+            "link": {
+                "name": "pPipe1_$AssimpFbx$_ScalingPivot<pPipe1_$AssimpFbx$_RotationPivotInverse<pPipe1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "168",
+            "deleted": true
+        },
+        "170": {
+            "link": {
+                "name": "pPipe1_$AssimpFbx$_ScalingPivotInverse<pPipe1_$AssimpFbx$_ScalingPivot<pPipe1_$AssimpFbx$_RotationPivotInverse<pPipe1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "169",
+            "deleted": true
+        },
+        "171": {
+            "link": {
+                "name": "pPipe1<pPipe1_$AssimpFbx$_ScalingPivotInverse<pPipe1_$AssimpFbx$_ScalingPivot<pPipe1_$AssimpFbx$_RotationPivotInverse<pPipe1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "170",
+            "deleted": true
+        },
+        "172": {
+            "link": {
+                "name": "transform16<pPipe1<pPipe1_$AssimpFbx$_ScalingPivotInverse<pPipe1_$AssimpFbx$_ScalingPivot<pPipe1_$AssimpFbx$_RotationPivotInverse<pPipe1_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "171",
+            "deleted": true
+        },
+        "173": {
+            "link": {
+                "name": "loftedSurface2<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "174": {
+            "link": {
+                "name": "transform13<loftedSurface2<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "173",
+            "deleted": true
+        },
+        "175": {
+            "link": {
+                "name": "pCube9_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "176": {
+            "link": {
+                "name": "pCube9_$AssimpFbx$_RotationPivotInverse<pCube9_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "175",
+            "deleted": true
+        },
+        "177": {
+            "link": {
+                "name": "pCube9_$AssimpFbx$_ScalingPivot<pCube9_$AssimpFbx$_RotationPivotInverse<pCube9_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "176",
+            "deleted": true
+        },
+        "178": {
+            "link": {
+                "name": "pCube9_$AssimpFbx$_ScalingPivotInverse<pCube9_$AssimpFbx$_ScalingPivot<pCube9_$AssimpFbx$_RotationPivotInverse<pCube9_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "177",
+            "deleted": true
+        },
+        "179": {
+            "link": {
+                "name": "pCube9<pCube9_$AssimpFbx$_ScalingPivotInverse<pCube9_$AssimpFbx$_ScalingPivot<pCube9_$AssimpFbx$_RotationPivotInverse<pCube9_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "178",
+            "deleted": true
+        },
+        "180": {
+            "link": {
+                "name": "transform12<pCube9<pCube9_$AssimpFbx$_ScalingPivotInverse<pCube9_$AssimpFbx$_ScalingPivot<pCube9_$AssimpFbx$_RotationPivotInverse<pCube9_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "179",
+            "deleted": true
+        },
+        "181": {
+            "link": {
+                "name": "pCube12_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "182": {
+            "link": {
+                "name": "pCube12_$AssimpFbx$_RotationPivotInverse<pCube12_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "181",
+            "deleted": true
+        },
+        "183": {
+            "link": {
+                "name": "pCube12_$AssimpFbx$_ScalingPivot<pCube12_$AssimpFbx$_RotationPivotInverse<pCube12_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "182",
+            "deleted": true
+        },
+        "184": {
+            "link": {
+                "name": "pCube12_$AssimpFbx$_ScalingPivotInverse<pCube12_$AssimpFbx$_ScalingPivot<pCube12_$AssimpFbx$_RotationPivotInverse<pCube12_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "183",
+            "deleted": true
+        },
+        "185": {
+            "link": {
+                "name": "pCube12<pCube12_$AssimpFbx$_ScalingPivotInverse<pCube12_$AssimpFbx$_ScalingPivot<pCube12_$AssimpFbx$_RotationPivotInverse<pCube12_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "184",
+            "deleted": true
+        },
+        "186": {
+            "link": {
+                "name": "transform11<pCube12<pCube12_$AssimpFbx$_ScalingPivotInverse<pCube12_$AssimpFbx$_ScalingPivot<pCube12_$AssimpFbx$_RotationPivotInverse<pCube12_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "185",
+            "deleted": true
+        },
+        "187": {
+            "link": {
+                "name": "pCube13_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "188": {
+            "link": {
+                "name": "pCube13_$AssimpFbx$_RotationPivotInverse<pCube13_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "187",
+            "deleted": true
+        },
+        "189": {
+            "link": {
+                "name": "pCube13_$AssimpFbx$_ScalingPivot<pCube13_$AssimpFbx$_RotationPivotInverse<pCube13_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "188",
+            "deleted": true
+        },
+        "190": {
+            "link": {
+                "name": "pCube13_$AssimpFbx$_ScalingPivotInverse<pCube13_$AssimpFbx$_ScalingPivot<pCube13_$AssimpFbx$_RotationPivotInverse<pCube13_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "189",
+            "deleted": true
+        },
+        "191": {
+            "link": {
+                "name": "pCube13<pCube13_$AssimpFbx$_ScalingPivotInverse<pCube13_$AssimpFbx$_ScalingPivot<pCube13_$AssimpFbx$_RotationPivotInverse<pCube13_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "190",
+            "deleted": true
+        },
+        "192": {
+            "link": {
+                "name": "transform15<pCube13<pCube13_$AssimpFbx$_ScalingPivotInverse<pCube13_$AssimpFbx$_ScalingPivot<pCube13_$AssimpFbx$_RotationPivotInverse<pCube13_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "191",
+            "deleted": true
+        },
+        "193": {
+            "link": {
+                "name": "pCylinder3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "194": {
+            "link": {
+                "name": "pCylinder3_$AssimpFbx$_RotationPivotInverse<pCylinder3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "193",
+            "deleted": true
+        },
+        "195": {
+            "link": {
+                "name": "pCylinder3_$AssimpFbx$_ScalingPivot<pCylinder3_$AssimpFbx$_RotationPivotInverse<pCylinder3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "194",
+            "deleted": true
+        },
+        "196": {
+            "link": {
+                "name": "pCylinder3_$AssimpFbx$_ScalingPivotInverse<pCylinder3_$AssimpFbx$_ScalingPivot<pCylinder3_$AssimpFbx$_RotationPivotInverse<pCylinder3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "195",
+            "deleted": true
+        },
+        "197": {
+            "link": {
+                "name": "pCylinder3<pCylinder3_$AssimpFbx$_ScalingPivotInverse<pCylinder3_$AssimpFbx$_ScalingPivot<pCylinder3_$AssimpFbx$_RotationPivotInverse<pCylinder3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "196",
+            "deleted": true
+        },
+        "198": {
+            "link": {
+                "name": "transform20<pCylinder3<pCylinder3_$AssimpFbx$_ScalingPivotInverse<pCylinder3_$AssimpFbx$_ScalingPivot<pCylinder3_$AssimpFbx$_RotationPivotInverse<pCylinder3_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "197",
+            "deleted": true
+        },
+        "199": {
+            "link": {
+                "name": "pCylinder4_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "200": {
+            "link": {
+                "name": "pCylinder4_$AssimpFbx$_RotationPivotInverse<pCylinder4_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "199",
+            "deleted": true
+        },
+        "201": {
+            "link": {
+                "name": "pCylinder4_$AssimpFbx$_ScalingPivot<pCylinder4_$AssimpFbx$_RotationPivotInverse<pCylinder4_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "200",
+            "deleted": true
+        },
+        "202": {
+            "link": {
+                "name": "pCylinder4_$AssimpFbx$_ScalingPivotInverse<pCylinder4_$AssimpFbx$_ScalingPivot<pCylinder4_$AssimpFbx$_RotationPivotInverse<pCylinder4_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "201",
+            "deleted": true
+        },
+        "203": {
+            "link": {
+                "name": "pCylinder4<pCylinder4_$AssimpFbx$_ScalingPivotInverse<pCylinder4_$AssimpFbx$_ScalingPivot<pCylinder4_$AssimpFbx$_RotationPivotInverse<pCylinder4_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "202",
+            "deleted": true
+        },
+        "204": {
+            "link": {
+                "name": "transform8<pCylinder4<pCylinder4_$AssimpFbx$_ScalingPivotInverse<pCylinder4_$AssimpFbx$_ScalingPivot<pCylinder4_$AssimpFbx$_RotationPivotInverse<pCylinder4_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "203",
+            "deleted": true
+        },
+        "205": {
+            "link": {
+                "name": "pCylinder2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "136",
+            "deleted": true
+        },
+        "206": {
+            "link": {
+                "name": "pCylinder2_$AssimpFbx$_RotationPivotInverse<pCylinder2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "205",
+            "deleted": true
+        },
+        "207": {
+            "link": {
+                "name": "pCylinder2_$AssimpFbx$_ScalingPivot<pCylinder2_$AssimpFbx$_RotationPivotInverse<pCylinder2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "206",
+            "deleted": true
+        },
+        "208": {
+            "link": {
+                "name": "pCylinder2_$AssimpFbx$_ScalingPivotInverse<pCylinder2_$AssimpFbx$_ScalingPivot<pCylinder2_$AssimpFbx$_RotationPivotInverse<pCylinder2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "207",
+            "deleted": true
+        },
+        "209": {
+            "link": {
+                "name": "pCylinder2<pCylinder2_$AssimpFbx$_ScalingPivotInverse<pCylinder2_$AssimpFbx$_ScalingPivot<pCylinder2_$AssimpFbx$_RotationPivotInverse<pCylinder2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "208",
+            "deleted": true
+        },
+        "210": {
+            "link": {
+                "name": "transform18<pCylinder2<pCylinder2_$AssimpFbx$_ScalingPivotInverse<pCylinder2_$AssimpFbx$_ScalingPivot<pCylinder2_$AssimpFbx$_RotationPivotInverse<pCylinder2_$AssimpFbx$_RotationPivot<group4<group4_$AssimpFbx$_ScalingPivotInverse<group4_$AssimpFbx$_ScalingPivot<group4_$AssimpFbx$_RotationPivotInverse<group4_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "209",
+            "deleted": true
+        },
+        "211": {
+            "link": {
+                "name": "group4_pCylinder3_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "deleted": true
+        },
+        "212": {
+            "link": {
+                "name": "group4_pCylinder3_$AssimpFbx$_RotationPivotInverse<group4_pCylinder3_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "211",
+            "deleted": true
+        },
+        "213": {
+            "link": {
+                "name": "group4_pCylinder3_$AssimpFbx$_ScalingPivot<group4_pCylinder3_$AssimpFbx$_RotationPivotInverse<group4_pCylinder3_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "212",
+            "deleted": true
+        },
+        "214": {
+            "link": {
+                "name": "group4_pCylinder3_$AssimpFbx$_ScalingPivotInverse<group4_pCylinder3_$AssimpFbx$_ScalingPivot<group4_pCylinder3_$AssimpFbx$_RotationPivotInverse<group4_pCylinder3_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": "213",
+            "deleted": true
+        },
+        "215": {
+            "link": {
+                "name": "group4_pCylinder3<group4_pCylinder3_$AssimpFbx$_ScalingPivotInverse<group4_pCylinder3_$AssimpFbx$_ScalingPivot<group4_pCylinder3_$AssimpFbx$_RotationPivotInverse<group4_pCylinder3_$AssimpFbx$_RotationPivot",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "parent": null,
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                1.5681029,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "224": {
+            "link": {
+                "name": "QuestControllerLeft",
+                "file": "glb\\static-quest-controllers.glb"
+            },
+            "deleted": true
+        },
+        "225": {
+            "link": {
+                "name": "QuestControllerRight",
+                "file": "glb\\static-quest-controllers.glb"
+            },
+            "deleted": true
+        }
+    },
+    "meshes": {
+        "7": {
+            "link": {
+                "name": "PrimitivePlane",
+                "file": "default"
+            }
+        },
+        "8": {
+            "link": {
+                "name": "PrimitiveCube",
+                "file": "default"
+            }
+        },
+        "9": {
+            "link": {
+                "name": "PrimitiveSphere",
+                "file": "default"
+            }
+        },
+        "10": {
+            "link": {
+                "name": "PrimitiveCone",
+                "file": "default"
+            }
+        },
+        "11": {
+            "link": {
+                "name": "PrimitiveCylinder",
+                "file": "default"
+            }
+        },
+        "12": {
+            "link": {
+                "name": "PrimitiveCircle",
+                "file": "default"
+            }
+        },
+        "83": {
+            "link": {
+                "name": "teleport-indicator-mesh",
+                "file": "glb\\teleport-indicator.glb"
+            }
+        },
+        "108": {
+            "link": {
+                "name": "mesh_0",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "129": {
+            "link": {
+                "name": "barrel_biohazard",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "131": {
+            "link": {
+                "name": "group4_pCylinder3",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            },
+            "importScaling": 0.0399999,
+            "name": "VRHeadset"
+        },
+        "222": {
+            "link": {
+                "name": "QuestControllerLeft",
+                "file": "glb\\static-quest-controllers.glb"
+            }
+        },
+        "223": {
+            "link": {
+                "name": "QuestControllerRight",
+                "file": "glb\\static-quest-controllers.glb"
+            }
+        }
+    },
+    "textures": {
+        "t0": {
+            "link": {
+                "name": "DefaultFont",
+                "file": "default"
+            },
+            "name": "DefaultFont"
+        },
+        "104": {
+            "link": {
+                "name": "texture_0",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "105": {
+            "link": {
+                "name": "texture_1",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "106": {
+            "link": {
+                "name": "texture_2",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "218": {
+            "link": {
+                "name": "texture_0",
+                "file": "glb\\static-quest-controllers.glb"
+            }
+        },
+        "219": {
+            "link": {
+                "name": "texture_1",
+                "file": "glb\\static-quest-controllers.glb"
+            }
+        }
+    },
+    "images": {
+        "f0": {
+            "link": {
+                "name": "DefaultFontImage",
+                "file": "default"
+            }
+        },
+        "216": {
+            "link": {
+                "name": "Image_0",
+                "file": "glb\\static-quest-controllers.glb"
+            },
+            "maxSize": [
+                1024,
+                1024
+            ]
+        },
+        "217": {
+            "link": {
+                "name": "Image_1",
+                "file": "glb\\static-quest-controllers.glb"
+            },
+            "maxSize": [
+                1024,
+                1024
+            ]
+        }
+    },
+    "materials": {
+        "DefaultFontMaterial": {
+            "link": {
+                "name": "DefaultFontMaterial",
+                "file": "default"
+            }
+        },
+        "20": {
+            "name": "White",
+            "Phong": {
+                "specularColor": [
+                    9.999899930335233e-7,
+                    9.99993744699168e-7,
+                    9.999999974752428e-7,
+                    1.0
+                ],
+                "shininess": 1
+            },
+            "pipeline": "123"
+        },
+        "22": {
+            "name": "Pink",
+            "Phong": {
+                "diffuseColor": [
+                    0.9098039,
+                    0.0,
+                    0.5411764,
+                    1.0
+                ],
+                "specularColor": [
+                    9.999899930335233e-7,
+                    9.999911299019005e-7,
+                    9.999999974752428e-7,
+                    1.0
+                ],
+                "shininess": 10,
+                "ambientColor": [
+                    0.317647,
+                    0.0,
+                    0.2165777,
+                    1.0
+                ]
+            }
+        },
+        "25": {
+            "name": "Yellow",
+            "Phong": {
+                "diffuseColor": [
+                    1.0,
+                    0.8039215,
+                    0.0,
+                    1.0
+                ],
+                "specularColor": [
+                    9.999999974752428e-7,
+                    9.999899930335233e-7,
+                    9.999899930335233e-7,
+                    1.0
+                ],
+                "ambientColor": [
+                    0.3843137,
+                    0.3089579,
+                    0.0,
+                    1.0
+                ]
+            }
+        },
+        "26": {
+            "name": "Green",
+            "Phong": {
+                "diffuseColor": [
+                    0.1529411,
+                    0.7882353,
+                    0.5411764,
+                    1.0
+                ],
+                "specularColor": [
+                    9.999999974752428e-7,
+                    9.999899930335233e-7,
+                    9.999899930335233e-7,
+                    1.0
+                ],
+                "ambientColor": [
+                    0.0,
+                    0.2352941,
+                    0.1437908,
+                    1.0
+                ]
+            }
+        },
+        "107": {
+            "link": {
+                "name": "barrel_biohazard_mat",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "130": {
+            "link": {
+                "name": "lambert1",
+                "file": "fbx\\Lentes VR\\LentesVR.fbx"
+            }
+        },
+        "220": {
+            "link": {
+                "name": "skel_controller_materials_controllerMTL1",
+                "file": "glb\\static-quest-controllers.glb"
+            }
+        },
+        "221": {
+            "link": {
+                "name": "skel_controller_materials_controllerMTL",
+                "file": "glb\\static-quest-controllers.glb"
+            }
+        }
+    },
+    "shaders": {
+        "113": {
+            "link": {
+                "name": "DistanceFieldVector",
+                "file": "default"
+            }
+        },
+        "115": {
+            "link": {
+                "name": "Dynamic",
+                "file": "default"
+            }
+        },
+        "116": {
+            "link": {
+                "name": "Flat",
+                "file": "default"
+            }
+        },
+        "119": {
+            "link": {
+                "name": "MeshVisualizer",
+                "file": "default"
+            }
+        },
+        "121": {
+            "link": {
+                "name": "Static",
+                "file": "default"
+            }
+        },
+        "122": {
+            "link": {
+                "name": "Phong",
+                "file": "default"
+            }
+        },
+        "125": {
+            "link": {
+                "name": "Skinning",
+                "file": "default"
+            }
+        },
+        "126": {
+            "link": {
+                "name": "Particle",
+                "file": "default"
+            }
+        }
+    },
+    "settings": {
+        "project": {
+            "name": "PeerTest",
+            "version": [
+                0,
+                8,
+                7
+            ]
+        },
+        "vr": {
+            "leftEyeObject": "18",
+            "rightEyeObject": "19"
+        },
+        "scripting": {
+            "sourcePaths": [
+                "/js/editor-components-bundle.js",
+                "js"
+            ]
+        },
+        "rendering": {
+            "clearColor": [
+                0.2,
+                0.2,
+                0.2,
+                1.0
+            ]
+        },
+        "runtime": {
+            "webxr": {
+                "requiredFeatures": {
+                    "local": false,
+                    "local-floor": true,
+                    "bounded-floor": false
+                },
+                "optionalFeatures": {
+                    "local": false,
+                    "local-floor": true,
+                    "bounded-floor": false
+                }
+            }
+        }
+    },
+    "animations": {},
+    "skins": {},
+    "files": [
+        "glb/teleport-indicator.glb",
+        "glb/Barrel_01.FBX",
+        "fbx/Lentes VR/LentesVR.fbx",
+        "glb/static-quest-controllers.glb"
+    ],
+    "pipelines": {
+        "114": {
+            "link": {
+                "name": "DistanceFieldVector",
+                "file": "default"
+            }
+        },
+        "117": {
+            "link": {
+                "name": "Flat Opaque",
+                "file": "default"
+            }
+        },
+        "118": {
+            "link": {
+                "name": "Flat Opaque Textured",
+                "file": "default"
+            }
+        },
+        "120": {
+            "link": {
+                "name": "MeshVisualizer",
+                "file": "default"
+            }
+        },
+        "123": {
+            "link": {
+                "name": "Phong Opaque",
+                "file": "default"
+            }
+        },
+        "124": {
+            "link": {
+                "name": "Phong Opaque Textured",
+                "file": "default"
+            }
+        },
+        "127": {
+            "link": {
+                "name": "Foliage",
+                "file": "default"
+            }
+        },
+        "128": {
+            "link": {
+                "name": "Particle",
+                "file": "default"
+            }
+        }
+    }
+}
