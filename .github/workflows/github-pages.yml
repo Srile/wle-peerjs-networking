@@ -11,8 +11,6 @@ jobs:
       run: /usr/local/bin/entrypoint.sh WonderlandEditor --windowless --package --project Project/example-scene-unlimited.wlp --output deploy/ --credentials "$WLE_CREDENTIALS"
       env:
           WLE_CREDENTIALS: ${{ secrets.WLE_CREDENTIALS }}
-    - name: Gzip
-      run: gzip -k deploy/**/*.*
     - name: Upload package artifact
       uses: actions/upload-artifact@v2
       with:
