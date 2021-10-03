@@ -83,7 +83,6 @@ WL.registerComponent(
               audio.srcObject = stream;
               audio.autoplay = true;
               this.streams[call.peer] = stream;
-              console.log("callestp2");
             }.bind(this)
           );
         }.bind(this)
@@ -325,7 +324,6 @@ WL.registerComponent(
           audio.srcObject = stream;
           audio.autoplay = true;
           this.streams[id] = stream;
-          console.log("call", id);
         }.bind(this)
       );
     },
