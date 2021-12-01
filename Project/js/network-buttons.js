@@ -1,14 +1,19 @@
 WL.registerComponent('network-buttons', {
     peerManagerObject: {type: WL.Type.Object},
     cursor: {type: WL.Type.Object},
+    hostButton: {type: WL.Type.Object},
+    joinButton: {type: WL.Type.Object},
 }, {
     start: function() {
       this.pm = this.peerManagerObject.getComponent('peer-manager');
-      this.children = this.object.children;
-      for (let c of this.children) {
-        if(c.name == 'HostButton') this.hostButton = c;
-        if(c.name == 'joinButton') this.joinButton = c;
+
+      /* If hostButton or joinButton are not specified, we search
+       * for them by name */
+      for (let c of this.object.children) {
+        if(c.name == 'HostButton') this.hostButton = this.hostButton || c;
+        if(c.name == 'JoinButton') this.joinButton = this.joinButton || c;
       }
+
       this.hostButtonCollider = this.hostButton.getComponent('collision');
       this.hostButton.getComponent('cursor-target').addClickFunction(this.pm.host.bind(this.pm));
 
