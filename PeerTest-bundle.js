@@ -259,617 +259,554 @@ WL.registerComponent('drum', {
 WL.registerComponent('network-buttons', {
     peerManagerObject: {type: WL.Type.Object},
     cursor: {type: WL.Type.Object},
+    hostButton: {type: WL.Type.Object},
+    joinButton: {type: WL.Type.Object},
 }, {
     start: function() {
       this.pm = this.peerManagerObject.getComponent('peer-manager');
-      this.children = this.object.children;
-      for (var i = 0; i < this.children.length; i++) {
-        switch(this.children[i].name) {
-          case 'HostButton':
-            this.hostButton = this.children[i];
-            break;
-          case 'JoinButton':
-            this.joinButton = this.children[i];
-            break
-        }
+
+      /* If hostButton or joinButton are not specified, we search
+       * for them by name */
+      for (let c of this.object.children) {
+        if(c.name == 'HostButton') this.hostButton = this.hostButton || c;
+        if(c.name == 'JoinButton') this.joinButton = this.joinButton || c;
       }
+
       this.hostButtonCollider = this.hostButton.getComponent('collision');
-      this.hostButton.getComponent('cursor-target').addClickFunction(function() {
-        this.pm.host();
-      }.bind(this));
+      this.hostButton.getComponent('cursor-target').addClickFunction(this.pm.host.bind(this.pm));
+
       this.joinButtonCollider = this.joinButton.getComponent('collision');
-      this.joinButton.getComponent('cursor-target').addClickFunction(function() {
-        this.pm.join();
-      }.bind(this));
+      this.joinButton.getComponent('cursor-target').addClickFunction(this.pm.join.bind(this.pm));
+
       this.pm.addConnectionEstablishedCallback(this.hide.bind(this));
       this.pm.addDisconnectCallback(this.show.bind(this));
     },
+
     show: function() {
       if(this.cursor.getComponent('cursor').setEnabled)
         this.cursor.getComponent('cursor').setEnabled(true);
       this.hostButtonCollider.active = true;
       this.joinButtonCollider.active = true;
-      this.object.setTranslationLocal([0,0,-3])
+      this.object.setTranslationLocal([0, 0, -3])
     },
+
     hide: function() {
+      /* Old versions of the cursor component don't have the setEnabled function */
       if(this.cursor.getComponent('cursor').setEnabled)
         this.cursor.getComponent('cursor').setEnabled(false);
       this.hostButtonCollider.active = false;
       this.joinButtonCollider.active = false;
-      this.object.setTranslationLocal([0,-300,0])
+      this.object.setTranslationLocal([0, -300, 0])
     }
 });
 
 let isHost = false;
 
-WL.registerComponent(
-  "peer-manager",
-  {
-    serverId: {
-      type: WL.Type.String,
-      default: "THISISAWONDERLANDENGINEPLACEHOLDER",
-    },
-    networkSendFrequencyInS: { type: WL.Type.Float, default: 0.01 },
-    playerHead: { type: WL.Type.Object },
-    playerRightHand: { type: WL.Type.Object },
-    playerLeftHand: { type: WL.Type.Object },
-    networkPlayerPool: { type: WL.Type.Object },
-    voiceEnabled: { type: WL.Type.Bool, default: true },
+WL.registerComponent("peer-manager", {
+  serverId: { type: WL.Type.String, default: "THISISAWONDERLANDENGINEPLACEHOLDER" },
+  networkSendFrequencyInS: { type: WL.Type.Float, default: 0.01 },
+  playerHead: { type: WL.Type.Object },
+  playerRightHand: { type: WL.Type.Object },
+  playerLeftHand: { type: WL.Type.Object },
+  networkPlayerPool: { type: WL.Type.Object },
+  voiceEnabled: { type: WL.Type.Bool, default: true },
+}, {
+  init: function() {
+    this.streams = {};
+
+    this.activePlayers = {};
+    this.currentDataPackage = {};
+    this.calls = {};
+    this.connections = [];
+    this.currentTime = 0.0;
+
+    // Dual quaternions for sending head, left and right hand transforms
+    this.headDualQuat = new Float32Array(8);
+    this.rightHandDualQuat = new Float32Array(8);
+    this.leftHandDualQuat = new Float32Array(8);
+
+    // Records user audio
+    this.audio = document.createElement("AUDIO");
+    this.audio.id = "localAudio";
+    document.body.appendChild(this.audio);
+
+    navigator.mediaDevices
+      .getUserMedia({ audio: true, video: false })
+      .then((stream) => { this.localStream = stream; })
+      .catch((err) => console.error("User denied audio access.", err));
+
+    this.connectionEstablishedCallbacks = this.connectionEstablishedCallbacks || [];
+    this.clientJoinedCallbacks = this.clientJoinedCallbacks || [];
+    this.disconnectCallbacks = this.disconnectCallbacks || [];
+    this.registeredNetworkCallbacks = this.registeredNetworkCallbacks || {};
   },
-  {
-    //
-    // Initialization
-    //
-    init: function () {
-      this.streams = {};
 
-      this.activePlayers = {};
-      this.currentDataPackage = {};
-      this.calls = {};
-      this.connections = [];
-      this.currentTime = 0.0;
+  start: function() {
+    /* Try to get one of the two types of spawner component */
+    this.networkPlayerSpawner =
+      this.networkPlayerPool.getComponent("peer-networked-player-pool") ||
+      this.networkPlayerPool.getComponent("peer-networked-player-spawner");
+  },
 
-      // Dual quaternions for sending head, left and right hand transforms
-      this.headDualQuat = new Float32Array(8);
-      this.rightHandDualQuat = new Float32Array(8);
-      this.leftHandDualQuat = new Float32Array(8);
+  //
+  // Host functions
+  //
+  host: function() {
+    this.peer = new Peer(this.serverId);
+    this.peer.on("open", this._onHostOpen.bind(this));
+    this.peer.on("connection", this._onHostConnected.bind(this));
+    this.peer.on("disconnected", this._onDisconnected.bind(this));
 
-      // Records user audio
-      this.audio = document.createElement("AUDIO");
-      this.audio.id = "localAudio";
-      document.querySelector("body").appendChild(this.audio);
+    this.peer.on("call", (call) => {
+      this.calls[call.peer] = call;
+      call.answer(this.localStream);
+      call.on("stream", (stream) => {
+        const audio = document.createElement("AUDIO");
+        audio.id = "remoteAudio" + call.peer;
+        document.body.appendChild(audio);
+        audio.srcObject = stream;
+        audio.autoplay = true;
+        this.streams[call.peer] = stream;
+      });
+    });
+  },
 
-      navigator.mediaDevices
-        .getUserMedia({ audio: true, video: false })
-        .then(
-          function (stream) {
-            this.localStream = stream;
-          }.bind(this)
-        )
-        .catch(function (err) {
-          console.error("User denied audio access.");
-        });
-      if (!this.connectionEstablishedCallbacks)
-        this.connectionEstablishedCallbacks = [];
-      if (!this.clientJoinedCallbacks) this.clientJoinedCallbacks = [];
-      if (!this.disconnectCallbacks) this.disconnectCallbacks = [];
-      if (!this.registeredNetworkCallbacks)
-        this.registeredNetworkCallbacks = {};
-    },
-    start: function () {
-      /* Try to get one of the two types of spawner component */
-      this.networkPlayerSpawner =
-        this.networkPlayerPool.getComponent("peer-networked-player-pool") ||
-        this.networkPlayerPool.getComponent("peer-networked-player-spawner");
-    },
-    //
-    // Host functions
-    //
-    host: function () {
-      this.peer = new Peer(this.serverId);
-      this.peer.on("open", this._onHostOpen.bind(this));
-      this.peer.on("connection", this._onHostConnected.bind(this));
-      this.peer.on("disconnected", this._onDisconnected.bind(this));
+  kick: function(id) {
+    this.currentDataPackage["disconnect"] = this.currentDataPackage["disconnect"] || [];
+    this.currentDataPackage["disconnect"].push(id);
+    this._removePlayer(id);
+  },
 
-      this.peer.on(
-        "call",
-        function (call) {
-          this.calls[call.peer] = call;
-          call.answer(this.localStream);
-          call.on(
-            "stream",
-            function (stream) {
-              let audio = document.createElement("AUDIO");
-              audio.id = "remoteAudio" + call.peer;
-              document.querySelector("body").appendChild(audio);
-              audio.srcObject = stream;
-              audio.autoplay = true;
-              this.streams[call.peer] = stream;
-            }.bind(this)
-          );
-        }.bind(this)
-      );
-    },
-    kick: function (id) {
-      if (!this.currentDataPackage["disconnect"])
-        this.currentDataPackage["disconnect"] = [];
-      this.currentDataPackage["disconnect"].push(id);
-      this._removePlayer(id);
-    },
-    _onHostOpen: function (id) {
-      isHost = true;
-      this.serverId = id;
-      this.activePlayers[this.serverId] = {};
-      for (let i = 0; i < this.connectionEstablishedCallbacks.length; i++) {
-        this.connectionEstablishedCallbacks[i]();
+  _onHostOpen: function(id) {
+    isHost = true;
+    this.serverId = id;
+    this.activePlayers[this.serverId] = {};
+    for (const cb of this.connectionEstablishedCallbacks) cb();
+  },
+
+  _onHostConnected: function(connection) {
+    this._hostPlayerJoined(connection.peer, connection.metadata.username);
+    this.connections.push(connection);
+    connection.on("open", () => {
+      // Additional data too be sent on joining can be added here
+      connection.send({ joinedPlayers: Object.keys(this.activePlayers), joined: true});
+    });
+    connection.on("close", () => this._onHostConnectionClose(connection));
+    connection.on("data", (data) => this._onHostDataRecieved(data, connection));
+    this.object.setTranslationWorld([0, 0, 0]);
+  },
+
+  _onHostDataRecieved: function(data, connection) {
+    if (data.transforms && this.activePlayers[connection.peer]) {
+      this.activePlayers[connection.peer].setTransforms(data.transforms);
+    }
+
+    for (const key of Object.keys(data)) {
+      if (key == "transforms") continue;
+      if (this.registeredNetworkCallbacks[key]) {
+        this.registeredNetworkCallbacks[key](data[key]);
       }
-    },
-    _onHostConnected: function (connection) {
-      this._hostPlayerJoined(connection.peer, connection.metadata.username);
-      this.connections.push(connection);
-      connection.on(
-        "open",
-        function () {
-          // Additional data too be sent on joining can be added here
-          connection.send({
-            joinedPlayers: Object.keys(this.activePlayers),
-            joined: true,
-          });
-        }.bind(this)
-      );
-      connection.on(
-        "close",
-        function () {
-          this._onHostConnectionClose(connection);
-        }.bind(this)
-      );
-      connection.on(
-        "data",
-        function (data) {
-          this._onHostDataRecieved(data, connection);
-        }.bind(this)
-      );
-      this.object.setTranslationWorld([0, 0, 0]);
-    },
-    _onHostDataRecieved: function (data, connection) {
-      if (data.transforms && this.activePlayers[connection.peer]) {
-        this.activePlayers[connection.peer].setTransforms(data.transforms);
-      }
-      const dataKeys = Object.keys(data);
-      for (let i = 0; i < dataKeys.length; i++) {
-        const key = dataKeys[i];
-        if (key == "transforms") continue;
-        if (this.registeredNetworkCallbacks[key]) {
-          this.registeredNetworkCallbacks[key](data[key]);
-        }
-      }
-      this.currentDataPackage[connection.peer] = data;
-    },
-    _onHostConnectionClose: function (connection) {
-      this._removePlayer(connection.peer);
-      this.object.setTranslationWorld([0, -1, 0]);
-      this.disconnect();
-      if (!this.currentDataPackage["disconnect"])
-        this.currentDataPackage["disconnect"] = [];
-      this.currentDataPackage["disconnect"].push(connection.peer);
-    },
-    _hostPlayerJoined: function (id) {
-      let newPlayer = this.networkPlayerSpawner.getEntity();
-      this.activePlayers[id] = newPlayer;
-      if (!this.currentDataPackage.joinedPlayers) {
-        this.currentDataPackage.joinedPlayers = [];
-      }
-      this.currentDataPackage.joinedPlayers.push(id);
-      for (let i = 0; i < this.clientJoinedCallbacks.length; i++) {
-        this.clientJoinedCallbacks[i](id, newPlayer);
-      }
-    },
-    //
-    // Client functions
-    //
-    join: function () {
-      this.connect(this.serverId);
-    },
-    connect: function (id) {
-      if (!id)
-        return console.error("peer-manager: Connection id parameter missing");
-      if (!this.peer) {
-        this.peer = new Peer();
-        this.peer.on("open", this._clientOnOpen.bind(this));
-        this.peer.on("disconnected", this._onDisconnected.bind(this));
-        this.connectionId = id;
-        this.peer.on(
-          "call",
-          function (call) {
-            if (!this.voiceEnabled) return;
-            this.calls[call.peer] = call;
-            call.answer(this.localStream);
-            call.on(
-              "stream",
-              function (stream) {
-                let audio = document.createElement("AUDIO");
-                audio.id = "remoteAudio" + id;
-                document.querySelector("body").appendChild(audio);
-                audio.srcObject = stream;
-                audio.autoplay = true;
-                this.streams[id] = stream;
-              }.bind(this)
-            );
-          }.bind(this)
-        );
-      }
-    },
-    disconnect: function () {
-      if (!this.peer) return;
-      this.peer.destroy();
-      this.peer = null;
-      this.connections = [];
-      delete this.connection;
-    },
-    _onClientConnected: function () {
-      this.call(this.serverId);
-      isHost = false;
-      for (let i = 0; i < this.connectionEstablishedCallbacks.length; i++) {
-        this.connectionEstablishedCallbacks[i]();
-      }
-    },
-    _onClientDataRecieved: function (data) {
-      let registeredCallbacksKeys = Object.keys(
-        this.registeredNetworkCallbacks
-      );
-      const keys = Object.keys(data);
-      const joined = keys.includes("joined");
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        const value = data[key];
-        if (key == "joinedPlayers") {
-          for (let j = 0; j < data.joinedPlayers.length; j++) {
-            // if the join id is the same, ignore
-            if (
-              data.joinedPlayers[j] == this.peer.id ||
-              this.activePlayers[data.joinedPlayers[j]]
-            )
-              continue;
-            if (!joined && data.joinedPlayers[j] != this.serverId) {
-              let currentIndex = j;
-              setTimeout(
-                function () {
-                  this.call(data.joinedPlayers[currentIndex]);
-                }.bind(this),
-                Math.floor(500 * j)
-              );
-            }
-            let newPlayer = this.networkPlayerSpawner.getEntity();
-            this.activePlayers[data.joinedPlayers[j]] = newPlayer;
-            for (let k = 0; k < this.clientJoinedCallbacks.length; i++) {
-              this.clientJoinedCallbacks[k](data.joinedPlayers[j], newPlayer);
-            }
-          }
-        } else {
-          if (key == "call") continue;
-          if (key == "disconnect") {
-            for (let j = 0; j < value.length; j++) {
-              this._removePlayer(value[j]);
-            }
-          }
-          if (this.activePlayers[key]) {
-            const values = Object.keys(value);
-            for (let j = 0; j < values.length; j++) {
-              if (values[j] == "transforms") {
-                this.activePlayers[key].setTransforms(value.transforms);
-              } else {
-                let includes = registeredCallbacksKeys.includes(values[j]);
-                if (includes) {
-                  this.registeredNetworkCallbacks[values[j]](value[values[j]]);
-                }
-              }
-            }
-          } else {
-            let includes = registeredCallbacksKeys.includes(key);
-            if (includes) {
-              this.registeredNetworkCallbacks[key](value);
-            }
-          }
-        }
-      }
-    },
-    _removeAllPlayers: function () {
-      const players = Object.keys(this.activePlayers);
-      for (let i = 0; i < players.length; i++) {
-        this._removePlayer(players[i]);
-      }
-    },
-    _removePlayer: function (peerId) {
-      if (!this.activePlayers[peerId]) return;
-      if (this.calls[peerId]) {
-        this.calls[peerId].close();
-        delete this.calls[peerId];
-      }
-      if (this.connections.length) {
-        const con = this.connections.find(function (element) {
-          return element.peer === peerId;
-        });
-        if (con) {
-          con.close();
-          let index = this.connections.indexOf(con);
-          if (index > -1) {
-            this.connections.splice(index, 1);
-          }
-        }
-      }
-      if (this.activePlayers[peerId]) {
-        if (Object.keys(this.activePlayers[peerId]).length !== 0) {
-          this.activePlayers[peerId].reset();
-          this.networkPlayerSpawner.returnEntity(this.activePlayers[peerId]);
-        }
-        delete this.activePlayers[peerId];
-      }
-    },
-    // All functions
-    _onDisconnected: function (connection) {
-      this._removeAllPlayers();
-      this.disconnect();
-      for (let i = 0; i < this.disconnectCallbacks.length; i++) {
-        this.disconnectCallbacks[i](connection.peer);
-      }
-    },
-    call: function (id) {
+    }
+    this.currentDataPackage[connection.peer] = data;
+  },
+
+  _onHostConnectionClose: function(connection) {
+    this._removePlayer(connection.peer);
+    this.object.setTranslationWorld([0, -1, 0]);
+    this.disconnect();
+
+    this.currentDataPackage["disconnect"] = this.currentDataPackage["disconnect"] || [];
+    this.currentDataPackage["disconnect"].push(connection.peer);
+  },
+
+  _hostPlayerJoined: function(id) {
+    let newPlayer = this.networkPlayerSpawner.getEntity();
+    this.activePlayers[id] = newPlayer;
+    this.currentDataPackage.joinedPlayers = this.currentDataPackage.joinedPlayers || [];
+    this.currentDataPackage.joinedPlayers.push(id);
+
+    for (const cb of this.clientJoinedCallbacks) cb(id, newPlayer);
+  },
+
+  //
+  // Client functions
+  //
+  join: function() {
+    this.connect(this.serverId);
+  },
+
+  connect: function(id) {
+    if (!id) return console.error("peer-manager: Connection id parameter missing");
+    // Already initialized?
+    if (this.peer) return;
+
+    this.peer = new Peer();
+    this.peer.on("open", this._clientOnOpen.bind(this));
+    this.peer.on("disconnected", this._onDisconnected.bind(this));
+
+    this.connectionId = id;
+
+    this.peer.on("call", (call) => {
       if (!this.voiceEnabled) return;
-      const call = this.peer.call(id, this.localStream);
-      this.calls[id] = call;
-      call.on(
-        "stream",
-        function (stream) {
-          let audio = document.createElement("AUDIO");
-          audio.id = id;
-          document.querySelector("body").appendChild(audio);
-          audio.srcObject = stream;
-          audio.autoplay = true;
-          this.streams[id] = stream;
-        }.bind(this)
-      );
-    },
-    _clientOnOpen: function () {
-      this.connection = this.peer.connect(this.connectionId, {
-        // reliable: true,
-        metadata: { username: "TestName" },
-      });
-      this.connection.on("open", this._onClientConnected.bind(this));
-      this.connection.on("data", this._onClientDataRecieved.bind(this));
-      this.connection.on("close", this._onClientClose.bind(this));
-    },
-    _onClientClose: function () {
-      if (this.peer) {
-        this.peer.destroy();
-      }
-    },
-    addConnectionEstablishedCallback: function (f) {
-      if (!this.connectionEstablishedCallbacks)
-        this.connectionEstablishedCallbacks = [];
-      this.connectionEstablishedCallbacks.push(f);
-    },
-    removeConnectionEstablishedCallback: function (f) {
-      const index = this.connectionEstablishedCallbacks.indexOf(f);
-      if (index > -1) {
-        this.connectionEstablishedCallbacks.splice(index, 1);
-      }
-    },
-    addClientJoinedCallback: function (f) {
-      if (!this.clientJoinedCallbacks) this.clientJoinedCallbacks = [];
-      this.clientJoinedCallbacks.push(f);
-    },
-    removeClientJoinedCallback: function (f) {
-      const index = this.clientJoinedCallbacks.indexOf(f);
-      if (index > -1) {
-        this.clientJoinedCallbacks.splice(index, 1);
-      }
-    },
-    addDisconnectCallback: function (f) {
-      if (!this.disconnectCallbacks) this.disconnectCallbacks = [];
-      this.disconnectCallbacks.push(f);
-    },
-    removeDisconnectCallback: function (f) {
-      const index = this.disconnectCallbacks.indexOf(f);
-      if (index > -1) {
-        this.disconnectCallbacks.splice(index, 1);
-      }
-    },
-    addNetworkDataRecievedCallback: function (key, f) {
-      if (!this.registeredNetworkCallbacks)
-        this.registeredNetworkCallbacks = {};
-      this.registeredNetworkCallbacks[key] = f;
-    },
-    removeNetworkDataRecievedCallback: function (key) {
-      delete this.registeredNetworkCallbacks[key];
-    },
-    sendPackage: function (key, data) {
-      this.currentDataPackage[key] = data;
-    },
-    sendPackageImmediately: function (key, data) {
-      let package = {};
-      package[key] = data;
-      if (this.connection) {
-        this.connection.send(package);
-      } else {
-        for (let i = 0; i < this.connections.length; i++) {
-          this.connections[i].send(package);
-        }
-      }
-    },
-    toggleMute: function () {
-      this.localStream.getTracks()[0].enabled =
-        !this.localStream.getTracks()[0].enabled;
-    },
-    setOwnMute: function (mute) {
-      this.localStream.getTracks()[0].enabled = !mute;
-    },
-    setOtherMute: function (id, mute) {
-      if (this.streams[id]) this.streams[id].getTracks()[0].enabled = !mute;
-    },
-    update: function (dt) {
-      if (this.connections.length) {
-        this.currentTime += dt;
-        if (this.currentTime >= this.networkSendFrequencyInS) {
-          this.currentTime = 0.0;
-          this.headDualQuat.set(this.playerHead.transformWorld);
-          this.rightHandDualQuat.set(this.playerRightHand.transformWorld);
-          this.leftHandDualQuat.set(this.playerLeftHand.transformWorld);
 
-          this.currentDataPackage[this.serverId] = {
-            transforms: {
-              head: this.headDualQuat,
-              rightHand: this.rightHandDualQuat,
-              leftHand: this.leftHandDualQuat,
-            },
-          };
-          if (Object.keys(this.currentDataPackage).length) {
-            for (let i = 0; i < this.connections.length; i++) {
-              let currentConnectionId = this.connections[i].peer;
-              const package = Object.fromEntries(
-                Object.entries(this.currentDataPackage).filter(function (e) {
-                  return e[0] != currentConnectionId;
-                })
-              );
-              if (Object.keys(package).length)
-                this.connections[i].send(package);
-            }
-            this.currentDataPackage = {};
+      this.calls[call.peer] = call;
+      call.answer(this.localStream);
+      call.on("stream", (stream) => {
+        const audio = document.createElement("AUDIO");
+        audio.id = "remoteAudio" + id;
+        document.body.appendChild(audio);
+        audio.srcObject = stream;
+        audio.autoplay = true;
+        this.streams[id] = stream;
+      });
+    });
+  },
+
+  disconnect: function() {
+    if (!this.peer) return;
+
+    this.peer.destroy();
+    this.peer = null;
+    this.connections = [];
+    delete this.connection;
+  },
+
+  _onClientConnected: function() {
+    this.call(this.serverId);
+    isHost = false;
+    for (const cb of this.connectionEstablishedCallbacks) cb();
+  },
+
+  _onClientDataRecieved: function(data) {
+    const registeredCallbacksKeys = Object.keys(this.registeredNetworkCallbacks);
+    const joined = "joined" in data;
+
+    for (const key of Object.keys(data)) {
+      const value = data[key];
+      if (key == "joinedPlayers") {
+        for (let j = 0; j < data.joinedPlayers.length; j++) {
+          const p = data.joinedPlayers[j];
+          // if the join id is the same, ignore
+          if (p == this.peer.id || this.activePlayers[p]) continue;
+          if (!joined && p != this.serverId) {
+            setTimeout(() => { this.call(p); }, Math.floor(500 * j));
           }
-        }
-      } else if (this.connection) {
-        this.currentTime += dt;
-        if (this.currentTime >= this.networkSendFrequencyInS) {
-          this.currentTime = 0.0;
 
-          this.headDualQuat.set(this.playerHead.transformWorld);
-          this.rightHandDualQuat.set(this.playerRightHand.transformWorld);
-          this.leftHandDualQuat.set(this.playerLeftHand.transformWorld);
-
-          this.currentDataPackage.transforms = {
-            head: this.headDualQuat,
-            rightHand: this.rightHandDualQuat,
-            leftHand: this.leftHandDualQuat,
-          };
-          this.connection.send(this.currentDataPackage);
-          this.currentDataPackage = {};
+          const newPlayer = this.networkPlayerSpawner.getEntity();
+          this.activePlayers[p] = newPlayer;
+          for (const cb of this.clientJoinedCallbacks) cb(p, newPlayer);
         }
+        continue;
       }
-    },
-  }
-);
 
-WL.registerComponent(
-  "peer-networked-player-pool",
-  {},
-  {
-    init: function () {
-      this.inactivePool = [];
-      for (let i = 0; i < this.object.children.length; i++) {
-        this.inactivePool.push(
-          this.object.children[i].getComponent("peer-networked-player")
+      if (key == "call") continue;
+      if (key == "disconnect") {
+        for (const v of value) this._removePlayer(v);
+      }
+
+      if (this.activePlayers[key]) {
+        const values = Object.keys(value);
+        for (const v of values) {
+          if (v == "transforms") {
+            this.activePlayers[key].setTransforms(value.transforms);
+            continue;
+          }
+
+          let includes = registeredCallbacksKeys.includes(v);
+          if (includes) this.registeredNetworkCallbacks[v](value[v]);
+        }
+        continue;
+      }
+
+      let includes = registeredCallbacksKeys.includes(key);
+      if (includes) this.registeredNetworkCallbacks[key](value);
+    }
+  },
+
+  _removeAllPlayers: function() {
+    const players = Object.keys(this.activePlayers);
+    for (const player of players) this._removePlayer(player);
+  },
+
+  _removePlayer: function(peerId) {
+    if (!this.activePlayers[peerId]) return;
+
+    if (this.calls[peerId]) {
+      this.calls[peerId].close();
+      delete this.calls[peerId];
+    }
+
+    if (this.connections.length) {
+      const con = this.connections.find((element) => { return element.peer === peerId; });
+      if (con) {
+        con.close();
+        let index = this.connections.indexOf(con);
+        if (index > -1) this.connections.splice(index, 1);
+      }
+    }
+
+    if (!this.activePlayers[peerId]) return;
+
+    if (Object.keys(this.activePlayers[peerId]).length !== 0) {
+      this.activePlayers[peerId].reset();
+      this.networkPlayerSpawner.returnEntity(this.activePlayers[peerId]);
+    }
+    delete this.activePlayers[peerId];
+  },
+
+  // All functions
+  _onDisconnected: function(connection) {
+    this._removeAllPlayers();
+    this.disconnect();
+    for (let cb of this.disconnectCallbacks) cb(connection.peer);
+  },
+
+  call: function(id) {
+    if (!this.voiceEnabled) return;
+
+    if(!this.localStream) {
+        /* If the page doesn't have permission to access
+         * audio stream, creation of the call would fail */
+        console.error("Cannot call: no audio stream");
+        return;
+    }
+    const call = this.peer.call(id, this.localStream);
+    this.calls[id] = call;
+    call.on("stream", (stream) => {
+      const audio = document.createElement("AUDIO");
+      audio.id = id;
+      document.body.appendChild(audio);
+      audio.srcObject = stream;
+      audio.autoplay = true;
+      this.streams[id] = stream;
+    });
+  },
+
+  _clientOnOpen: function() {
+    this.connection = this.peer.connect(this.connectionId, {
+      // reliable: true,
+      metadata: { username: "TestName" },
+    });
+    this.connection.on("open", this._onClientConnected.bind(this));
+    this.connection.on("data", this._onClientDataRecieved.bind(this));
+    this.connection.on("close", this._onClientClose.bind(this));
+  },
+
+  _onClientClose: function() {
+    if (this.peer) this.peer.destroy();
+  },
+
+  addConnectionEstablishedCallback: function(f) {
+    this.connectionEstablishedCallbacks = this.connectionEstablishedCallbacks || [];
+    this.connectionEstablishedCallbacks.push(f);
+  },
+
+  removeConnectionEstablishedCallback: function(f) {
+    const index = this.connectionEstablishedCallbacks.indexOf(f);
+    if (index <= -1) return;
+
+    this.connectionEstablishedCallbacks.splice(index, 1);
+  },
+  addClientJoinedCallback: function(f) {
+    this.clientJoinedCallbacks = this.clientJoinedCallbacks || [];
+    this.clientJoinedCallbacks.push(f);
+  },
+  removeClientJoinedCallback: function(f) {
+    const index = this.clientJoinedCallbacks.indexOf(f);
+    if (index <= -1) return
+
+    this.clientJoinedCallbacks.splice(index, 1);
+  },
+  addDisconnectCallback: function(f) {
+    this.disconnectCallbacks = this.disconnectCallbacks || [];
+    this.disconnectCallbacks.push(f);
+  },
+  removeDisconnectCallback: function(f) {
+    const index = this.disconnectCallbacks.indexOf(f);
+    if (index <= -1) return;
+
+    this.disconnectCallbacks.splice(index, 1);
+  },
+
+  addNetworkDataRecievedCallback: function(key, f) {
+    this.registeredNetworkCallbacks = this.registeredNetworkCallbacks || {};
+    this.registeredNetworkCallbacks[key] = f;
+  },
+
+  removeNetworkDataRecievedCallback: function(key) {
+    delete this.registeredNetworkCallbacks[key];
+  },
+
+  sendPackage: function(key, data) {
+    this.currentDataPackage[key] = data;
+  },
+
+  sendPackageImmediately: function(key, data) {
+    let package = {};
+    package[key] = data;
+
+    if (this.connection) {
+      this.connection.send(package);
+      return;
+    }
+
+    for (let con of this.connections) con.send(package);
+  },
+
+  toggleMute: function() {
+    this.localStream.getTracks()[0].enabled =
+      !this.localStream.getTracks()[0].enabled;
+  },
+
+  setOwnMute: function(mute) {
+    this.localStream.getTracks()[0].enabled = !mute;
+  },
+
+  setOtherMute: function(id, mute) {
+    if (this.streams[id]) this.streams[id].getTracks()[0].enabled = !mute;
+  },
+
+  update: function(dt) {
+    if(!this.connection && this.connections.length == 0) return;
+
+    this.currentTime += dt;
+    if (this.currentTime < this.networkSendFrequencyInS) return;
+
+    this.currentTime = 0.0;
+
+    this.headDualQuat.set(this.playerHead.transformWorld);
+    this.rightHandDualQuat.set(this.playerRightHand.transformWorld);
+    this.leftHandDualQuat.set(this.playerLeftHand.transformWorld);
+
+    if (this.connections.length) {
+      this.currentDataPackage[this.serverId] = {
+        transforms: {
+          head: this.headDualQuat,
+          rightHand: this.rightHandDualQuat,
+          leftHand: this.leftHandDualQuat,
+        },
+      };
+
+      if (Object.keys(this.currentDataPackage).length == 0) return
+
+      for (let con of this.connections) {
+        const currentConnectionId = con.peer;
+        const package = Object.fromEntries(
+          Object.entries(this.currentDataPackage).filter((e) => { return e[0] != currentConnectionId; })
         );
+        if (Object.keys(package).length) con.send(package);
       }
-    },
-    getEntity: function () {
-      if (this.inactivePool.length) return this.inactivePool.shift();
-      console.error("peer-networked-player-pool: No more inactive entities");
-    },
-    returnEntity: function (entity) {
-      this.inactivePool.push(entity);
-    },
-  }
-);
+    } else {
+      this.currentDataPackage.transforms = {
+        head: this.headDualQuat,
+        rightHand: this.rightHandDualQuat,
+        leftHand: this.leftHandDualQuat,
+      };
 
-WL.registerComponent(
-  "peer-networked-player",
-  {
-    nameTextObject: { type: WL.Type.Object },
+      this.connection.send(this.currentDataPackage);
+    }
+
+    this.currentDataPackage = {};
   },
-  {
-    init: function () {
-      for (let currentChild of this.object.children) {
-        switch (currentChild.name) {
-          case "Head":
-            this.head = currentChild;
-            break;
-          case "LeftHand":
-            this.leftHand = currentChild;
-            break;
-          case "RightHand":
-            this.rightHand = currentChild;
-            break;
-        }
-      }
-    },
-    setName: function (name) {
-      if (this.nameTextObject)
-        this.nameTextObject.getComponent("text").text = name;
-    },
-    reset: function () {
-      this.head.resetTranslationRotation();
-      this.rightHand.resetTranslationRotation();
-      this.leftHand.resetTranslationRotation();
-    },
-    setTransforms: function (transforms) {
-      this.head.transformLocal.set(new Float32Array(transforms.head));
-      this.head.setDirty();
-      this.rightHand.transformLocal.set(new Float32Array(transforms.rightHand));
-      this.rightHand.setDirty();
-      this.leftHand.transformLocal.set(new Float32Array(transforms.leftHand));
-      this.leftHand.setDirty();
-    },
-  }
-);
+});
 
-WL.registerComponent(
-  "peer-networked-player-spawner",
-  {
-    headMesh: { type: WL.Type.Mesh },
-    headMaterial: { type: WL.Type.Material },
-    leftHandMesh: { type: WL.Type.Mesh },
-    leftHandMaterial: { type: WL.Type.Material },
-    rightHandMesh: { type: WL.Type.Mesh },
-    rightHandMaterial: { type: WL.Type.Material },
+WL.registerComponent("peer-networked-player-pool", {
+
+}, {
+  init: function() {
+    this.inactivePool = [];
+    for (let c of this.object.children) {
+      this.inactivePool.push(c.getComponent("peer-networked-player"));
+    }
   },
-  {
-    init: function () {
-      this.count = 0;
-    },
-
-    getEntity: function () {
-      const player = WL.scene.addObject(1);
-      const children = WL.scene.addObjects(3, player);
-
-      children[0].name = "Head";
-      children[0].addComponent("mesh", {
-        mesh: this.headMesh,
-        material: this.headMaterial,
-      });
-
-      children[1].name = "LeftHand";
-      children[1].addComponent("mesh", {
-        mesh: this.leftHandMesh,
-        material: this.leftHandMaterial,
-      });
-
-      children[2].name = "RightHand";
-      children[2].addComponent("mesh", {
-        mesh: this.rightHandMesh,
-        material: this.rightHandMaterial,
-      });
-
-      player.name = `Player ${this.count++}`;
-      return player.addComponent("peer-networked-player");
-    },
-
-    returnEntity: function (player) {
-      player.children.forEach((c) => {
-        c.active = false;
-      });
-      player.active = false;
-    },
-  }
+  getEntity: function() {
+    if (this.inactivePool.length) return this.inactivePool.shift();
+    console.error("peer-networked-player-pool: No more inactive entities");
+  },
+  returnEntity: function(entity) {
+    this.inactivePool.push(entity);
+  },
+}
 );
+
+WL.registerComponent("peer-networked-player", {
+  nameTextObject: { type: WL.Type.Object }
+}, {
+  init: function() {
+    for (let c of this.object.children) {
+      if(c.name == "Head") this.head = c;
+      if(c.name == "LeftHand") this.leftHand = c;
+      if(c.name == "RightHand") this.rightHand = c;
+    }
+  },
+
+  setName: function(name) {
+    if (this.nameTextObject) this.nameTextObject.getComponent("text").text = name;
+  },
+
+  reset: function() {
+    this.head.resetTranslationRotation();
+    this.rightHand.resetTranslationRotation();
+    this.leftHand.resetTranslationRotation();
+  },
+
+  setTransforms: function(transforms) {
+    this.head.transformLocal.set(new Float32Array(transforms.head));
+    this.head.setDirty();
+
+    this.rightHand.transformLocal.set(new Float32Array(transforms.rightHand));
+    this.rightHand.setDirty();
+
+    this.leftHand.transformLocal.set(new Float32Array(transforms.leftHand));
+    this.leftHand.setDirty();
+  },
+}
+);
+
+WL.registerComponent("peer-networked-player-spawner", {
+  headMesh: { type: WL.Type.Mesh },
+  headMaterial: { type: WL.Type.Material },
+  leftHandMesh: { type: WL.Type.Mesh },
+  leftHandMaterial: { type: WL.Type.Material },
+  rightHandMesh: { type: WL.Type.Mesh },
+  rightHandMaterial: { type: WL.Type.Material },
+}, {
+  init: function() {
+    this.count = 0;
+  },
+
+  getEntity: function() {
+    const player = WL.scene.addObject(1);
+    const children = WL.scene.addObjects(3, player);
+
+    children[0].name = "Head";
+    children[0].addComponent("mesh", {
+      mesh: this.headMesh,
+      material: this.headMaterial,
+    });
+
+    children[1].name = "LeftHand";
+    children[1].addComponent("mesh", {
+      mesh: this.leftHandMesh,
+      material: this.leftHandMaterial,
+    });
+
+    children[2].name = "RightHand";
+    children[2].addComponent("mesh", {
+      mesh: this.rightHandMesh,
+      material: this.rightHandMaterial,
+    });
+
+    player.name = `Player ${this.count++}`;
+    return player.addComponent("peer-networked-player");
+  },
+
+  returnEntity: function(player) {
+    console.log("returning:", player);
+    player.children.forEach((c) => { c.active = false; });
+    player.active = false;
+  },
+});
 
 parcelRequire=function(e,r,t,n){var i,o="function"==typeof parcelRequire&&parcelRequire,u="function"==typeof require&&require;function f(t,n){if(!r[t]){if(!e[t]){var i="function"==typeof parcelRequire&&parcelRequire;if(!n&&i)return i(t,!0);if(o)return o(t,!0);if(u&&"string"==typeof t)return u(t);var c=new Error("Cannot find module '"+t+"'");throw c.code="MODULE_NOT_FOUND",c}p.resolve=function(r){return e[t][1][r]||r},p.cache={};var l=r[t]=new f.Module(t);e[t][0].call(l.exports,p,l,l.exports,this)}return r[t].exports;function p(e){return f(p.resolve(e))}}f.isParcelRequire=!0,f.Module=function(e){this.id=e,this.bundle=f,this.exports={}},f.modules=e,f.cache=r,f.parent=o,f.register=function(r,t){e[r]=[function(e,r){r.exports=t},{}]};for(var c=0;c<t.length;c++)try{f(t[c])}catch(e){i||(i=e)}if(t.length){var l=f(t[t.length-1]);"object"==typeof exports&&"undefined"!=typeof module?module.exports=l:"function"==typeof define&&define.amd?define(function(){return l}):n&&(this[n]=l)}if(parcelRequire=f,i)throw i;return f}({"EgBh":[function(require,module,exports) {
 var e={};e.useBlobBuilder=function(){try{return new Blob([]),!1}catch(e){return!0}}(),e.useArrayBufferView=!e.useBlobBuilder&&function(){try{return 0===new Blob([new Uint8Array([])]).size}catch(e){return!0}}(),module.exports.binaryFeatures=e;var r=module.exports.BlobBuilder;function t(){this._pieces=[],this._parts=[]}"undefined"!=typeof window&&(r=module.exports.BlobBuilder=window.WebKitBlobBuilder||window.MozBlobBuilder||window.MSBlobBuilder||window.BlobBuilder),t.prototype.append=function(e){"number"==typeof e?this._pieces.push(e):(this.flush(),this._parts.push(e))},t.prototype.flush=function(){if(this._pieces.length>0){var r=new Uint8Array(this._pieces);e.useArrayBufferView||(r=r.buffer),this._parts.push(r),this._pieces=[]}},t.prototype.getBuffer=function(){if(this.flush(),e.useBlobBuilder){for(var t=new r,i=0,u=this._parts.length;i<u;i++)t.append(this._parts[i]);return t.getBlob()}return new Blob(this._parts)},module.exports.BufferBuilder=t;
