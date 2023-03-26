@@ -1,0 +1,26 @@
+{
+  "name": "wle-networking",
+  "version": "1.0.0",
+  "description": "A small set of components for [Wonderland Engine](https://wonderlandengine.com/ \"Wonderland Engine\") for basic networking functionalities using [peer.js](https://peerjs.com/ \"peer.js\").",
+  "main": "peer-components.js",
+  "type": "module",
+  "scripts": {},
+  "wonderlandengine": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Srile/wle-networking.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Srile/wle-networking/issues"
+  },
+  "homepage": "https://github.com/Srile/wle-networking#readme",
+  "dependencies": {
+    "@wonderlandengine/api": "^1.0.0-rc.2",
+    "peerjs": "^1.4.7"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.7"
+  }
+}

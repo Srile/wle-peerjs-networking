@@ -1,1 +1,3 @@
-deploy/
+**/deploy/
+**/node_modules/
+**/cache/
