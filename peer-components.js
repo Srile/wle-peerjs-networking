@@ -58,8 +58,8 @@ export class PeerManager extends Component {
     start() {
         /* Try to get one of the two types of spawner component */
         this.networkPlayerSpawner =
-            this.networkPlayerPool.getComponent('peer-networked-player-pool') ||
-            this.networkPlayerPool.getComponent('peer-networked-player-spawner');
+            this.networkPlayerPool.getComponent(PeerNetworkedPlayerPool) ||
+            this.networkPlayerPool.getComponent(PeerNetworkedPlayerSpawner);
     }
 
     //
@@ -453,7 +453,7 @@ export class PeerNetworkedPlayerPool extends Component {
     init() {
         this.inactivePool = [];
         for (let c of this.object.children) {
-            this.inactivePool.push(c.getComponent('peer-networked-player'));
+            this.inactivePool.push(c.getComponent(PeerNetworkedPlayer));
         }
     }
 
@@ -513,6 +513,7 @@ export class PeerNetworkedPlayerSpawner extends Component {
         rightHandMesh: {type: Type.Mesh},
         rightHandMaterial: {type: Type.Material},
     };
+    static Dependencies = [PeerNetworkedPlayer];
 
     init() {
         this.count = 0;
@@ -541,7 +542,7 @@ export class PeerNetworkedPlayerSpawner extends Component {
         });
 
         player.name = `Player ${this.count++}`;
-        return player.addComponent('peer-networked-player');
+        return player.addComponent(PeerNetworkedPlayer);
     }
 
     returnEntity(player) {
