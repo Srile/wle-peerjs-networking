@@ -1,0 +1,39 @@
+{
+  "name": "wle-peerjs-networking",
+  "version": "1.0.0",
+  "description": "A small set of components for [Wonderland Engine](https://wonderlandengine.com/) for basic networking functionality using [peer.js](https://peerjs.com/).",
+  "main": "peer-components.js",
+  "type": "module",
+  "scripts": {},
+  "wonderlandengine": {},
+  "keywords": [
+      "webxr",
+      "wonderlandengine",
+      "networking",
+      "multiplayer",
+      "webrtc",
+      "components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Srile/wle-peerjs-networking.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Srile/wle-peerjs-networking/issues"
+  },
+  "homepage": "https://github.com/Srile/wle-peerjs-networking#readme",
+  "dependencies": {
+    "peerjs": "^1.4.7"
+  },
+  "peerDependencies": {
+    "@wonderlandengine/api": "^1.0.0-rc.5 || ^1.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.7"
+  },
+  "files": [
+      "peer-components.js"
+  ]
+}

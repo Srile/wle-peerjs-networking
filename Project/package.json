@@ -1,0 +1,19 @@
+{
+  "name": "peer-test",
+  "version": "1.0.0",
+  "description": "My Wonderland project",
+  "main": "js/index.js",
+  "type": "module",
+  "module": "js/index.js",
+  "scripts": {},
+  "keywords": [
+    "wonderland-engine"
+  ],
+  "dependencies": {
+    "@wonderlandengine/api": "^1.0.0-rc.5",
+    "@wonderlandengine/components": "^1.0.0-rc.6",
+    "gl-matrix": "^3.4.3",
+    "tone": "^14.7.77",
+    "wle-networking": "file:.."
+  }
+}
