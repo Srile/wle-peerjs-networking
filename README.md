@@ -1,4 +1,4 @@
-## Wonderland Engine Basic Networking Components
+## Wonderland Engine PeerJS Networking Components
 
 A small set of components for [Wonderland Engine](https://wonderlandengine.com/ "Wonderland Engine") for basic networking functionalities using [peer.js](https://peerjs.com/ "peer.js").
 
