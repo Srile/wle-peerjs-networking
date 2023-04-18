@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/Srile/wle-networking#readme",
   "dependencies": {
-    "@wonderlandengine/api": "^1.0.0-rc.2",
     "peerjs": "^1.4.7"
+  },
+  "peerDependencies": {
+    "@wonderlandengine/api": "^1.0.0-rc.5 || ^1.0.0"
   },
   "devDependencies": {
     "prettier": "^2.8.7"
