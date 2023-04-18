@@ -11,28 +11,31 @@
  *     - `wle:auto-benchmark:start` and `wle:auto-benchmark:end`: Append the benchmarking code
  */
 
-import {loadRuntime} from '@wonderlandengine/api';
-import * as API from '@wonderlandengine/api'; // Deprecated: Backward compatibility.
-
 /* wle:auto-imports:start */
-import {ControllerTeleportComponent} from './controller-teleport-component.js';
 import {Cursor} from '@wonderlandengine/components';
 import {CursorTarget} from '@wonderlandengine/components';
-import {Drum} from './drum.js';
 import {HowlerAudioListener} from '@wonderlandengine/components';
 import {HowlerAudioSource} from '@wonderlandengine/components';
 import {MouseLookComponent} from '@wonderlandengine/components';
-import {NetworkButtons} from './network-buttons.js';
+import {WasdControlsComponent} from '@wonderlandengine/components';
 import {PeerManager} from 'wle-networking';
 import {PeerNetworkedPlayerSpawner} from 'wle-networking';
-import {WasdControlsComponent} from '@wonderlandengine/components';
+import {ControllerTeleportComponent} from './controller-teleport-component.js';
+import {Drum} from './drum.js';
+import {NetworkButtons} from './network-buttons.js';
 /* wle:auto-imports:end */
+
+import {loadRuntime} from '@wonderlandengine/api';
+import * as API from '@wonderlandengine/api'; // Deprecated: Backward compatibility.
 
 /* wle:auto-constants:start */
 const ProjectName = 'PeerTest';
 const RuntimeBaseName = 'WonderlandRuntime';
 const WithPhysX = false;
 const WithLoader = false;
+const WebXRFramebufferScaleFactor = 1;
+const WebXRRequiredFeatures = ['local-floor',];
+const WebXROptionalFeatures = ['local-floor','hand-tracking','hit-test',];
 /* wle:auto-constants:end */
 
 const engine = await loadRuntime(RuntimeBaseName, {
@@ -42,32 +45,52 @@ const engine = await loadRuntime(RuntimeBaseName, {
 Object.assign(engine, API); // Deprecated: Backward compatibility.
 window.WL = engine; // Deprecated: Backward compatibility.
 
-engine.onSceneLoaded.push(() => {
+engine.xrFramebufferScaleFactor = WebXRFramebufferScaleFactor;
+engine.onSceneLoaded.once(() => {
     const el = document.getElementById('version');
     if (el) setTimeout(() => el.remove(), 2000);
 });
 
-const arButton = document.getElementById('ar-button');
-if (arButton) {
-    arButton.dataset.supported = engine.arSupported;
+/* WebXR setup. */
+
+function requestSession(mode) {
+    engine
+        .requestXRSession(mode, WebXRRequiredFeatures, WebXROptionalFeatures)
+        .catch((e) => console.error(e));
 }
-const vrButton = document.getElementById('vr-button');
-if (vrButton) {
-    vrButton.dataset.supported = engine.vrSupported;
+
+function setupButtonsXR() {
+    /* Setup AR / VR buttons */
+    const arButton = document.getElementById('ar-button');
+    if (arButton) {
+        arButton.dataset.supported = engine.arSupported;
+        arButton.addEventListener('click', () => requestSession('immersive-ar'));
+    }
+    const vrButton = document.getElementById('vr-button');
+    if (vrButton) {
+        vrButton.dataset.supported = engine.vrSupported;
+        vrButton.addEventListener('click', () => requestSession('immersive-vr'));
+    }
+}
+
+if (document.readyState === 'loading') {
+    window.addEventListener('load', setupButtonsXR);
+} else {
+    setupButtonsXR();
 }
 
 /* wle:auto-register:start */
-engine.registerComponent(ControllerTeleportComponent);
 engine.registerComponent(Cursor);
 engine.registerComponent(CursorTarget);
-engine.registerComponent(Drum);
 engine.registerComponent(HowlerAudioListener);
 engine.registerComponent(HowlerAudioSource);
 engine.registerComponent(MouseLookComponent);
-engine.registerComponent(NetworkButtons);
+engine.registerComponent(WasdControlsComponent);
 engine.registerComponent(PeerManager);
 engine.registerComponent(PeerNetworkedPlayerSpawner);
-engine.registerComponent(WasdControlsComponent);
+engine.registerComponent(ControllerTeleportComponent);
+engine.registerComponent(Drum);
+engine.registerComponent(NetworkButtons);
 /* wle:auto-register:end */
 
 engine.scene.load(`${ProjectName}.bin`);
