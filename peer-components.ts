@@ -1,44 +1,91 @@
-import {Component, Type} from '@wonderlandengine/api';
-
+import {Component, Material, Mesh, MeshComponent, Object3D, TextComponent, Type} from '@wonderlandengine/api';
+import { property } from '@wonderlandengine/api/decorators.js';
+import type { DataConnection, MediaConnection, Peer as PeerType } from 'peerjs';
 export let isHost = false;
-var Peer;
+
+interface PeerConstructor {
+    new (id?:string|null): PeerType;
+}
+
+let Peer: PeerConstructor|null = null;
+
+const tempTranform = new Float32Array(8);
+const tempVec: Float32Array = new Float32Array(3);
+
+interface PlayerTransforms {
+    head: Float32Array;
+    rightHand: Float32Array;
+    leftHand: Float32Array;
+}
+
+interface DataPackage {
+    transforms?: PlayerTransforms;
+    joinedPlayers?: string[];
+}
 
 export class PeerManager extends Component {
     static TypeName = 'peer-manager';
-    static Properties = {
-        serverId: {
-            type: Type.String,
-            default: 'THISISAWONDERLANDENGINEPLACEHOLDER',
-        },
-        networkSendFrequencyInS: {type: Type.Float, default: 0.01},
-        playerHead: {type: Type.Object},
-        playerRightHand: {type: Type.Object},
-        playerLeftHand: {type: Type.Object},
-        networkPlayerPool: {type: Type.Object},
-        voiceEnabled: {type: Type.Bool, default: true},
-    };
+
+    streams: {[propKey: string]: MediaStream} = {};
+    activePlayers: {[propKey: string]: PeerNetworkedPlayer|null} = {};
+
+    currentDataPackage: DataPackage & {[propKey: string]: any} = {};
+    calls: {[propKey: string]: MediaConnection} = {};
+    connections: DataConnection[] = [];
+    currentTime: number = 0.0;
+
+    // Dual quaternions for sending head, left and right hand transforms
+    headDualQuat: Float32Array = new Float32Array(8);
+    rightHandDualQuat: Float32Array = new Float32Array(8);
+    leftHandDualQuat: Float32Array = new Float32Array(8);
+
+    // Records user audio
+    audio: HTMLAudioElement|null = null;
+
+    localStream?: MediaStream;
+    
+    connectionEstablishedCallbacks: (() => void)[] = [];
+    clientJoinedCallbacks: ((peer: string, player: PeerNetworkedPlayer) => void)[] = [];
+    disconnectCallbacks: (() => void)[] = [];
+    registeredNetworkCallbacks: {[propKey: string]: ((data: any) => void)} = {};
+
+    networkPlayerSpawner: PeerNetworkedPlayerPool|PeerNetworkedPlayerSpawner|null = null;
+
+    peer: PeerType|null = null;
+
+    connection?: DataConnection|null = null;
+
+    connectionId: string|null = null
+
+    /* Properties */
+    @property.string('THISISAWONDERLANDENGINEPLACEHOLDER')
+    serverId: string = 'THISISAWONDERLANDENGINEPLACEHOLDER';
+     
+    @property.float(0.01)
+    networkSendFrequencyInS: number = 0.01;
+
+    @property.object()
+    playerHead: Object3D|null = null;
+    
+    @property.object()
+    playerRightHand: Object3D|null = null;
+
+    @property.object()
+    playerLeftHand: Object3D|null = null;
+
+    @property.object()
+    networkPlayerPool: Object3D|null = null;
+
+    @property.bool(true)
+    voiceEnabled: boolean = true;
 
     init() {
         /* We need to require() peerjs, since it uses 'navigator' in the
          * global scope, which isn't available when Wonderland Editor evaluates
          * the bundle for finding components */
         Peer = require('peerjs').Peer;
-
-        this.streams = {};
-
-        this.activePlayers = {};
-        this.currentDataPackage = {};
-        this.calls = {};
-        this.connections = [];
-        this.currentTime = 0.0;
-
-        // Dual quaternions for sending head, left and right hand transforms
-        this.headDualQuat = new Float32Array(8);
-        this.rightHandDualQuat = new Float32Array(8);
-        this.leftHandDualQuat = new Float32Array(8);
-
-        // Records user audio
-        this.audio = document.createElement('AUDIO');
+        
+        this.audio = document.createElement('audio');
         this.audio.id = 'localAudio';
         document.body.appendChild(this.audio);
 
@@ -48,14 +95,11 @@ export class PeerManager extends Component {
                 this.localStream = stream;
             })
             .catch((err) => console.error('User denied audio access.', err));
-
-        this.connectionEstablishedCallbacks = this.connectionEstablishedCallbacks || [];
-        this.clientJoinedCallbacks = this.clientJoinedCallbacks || [];
-        this.disconnectCallbacks = this.disconnectCallbacks || [];
-        this.registeredNetworkCallbacks = this.registeredNetworkCallbacks || {};
     }
 
     start() {
+        if(!this.networkPlayerPool) throw new Error('networkPlayerPool was not set');
+        
         /* Try to get one of the two types of spawner component */
         this.networkPlayerSpawner =
             this.networkPlayerPool.getComponent(PeerNetworkedPlayerPool) ||
@@ -66,16 +110,18 @@ export class PeerManager extends Component {
     // Host functions
     //
     host() {
+        if(!Peer) throw new Error('Peer object not found');
+
         this.peer = new Peer(this.serverId);
         this.peer.on('open', this._onHostOpen.bind(this));
         this.peer.on('connection', this._onHostConnected.bind(this));
         this.peer.on('disconnected', this._onDisconnected.bind(this));
 
-        this.peer.on('call', (call) => {
+        this.peer.on('call', (call: MediaConnection) => {
             this.calls[call.peer] = call;
             call.answer(this.localStream);
             call.on('stream', (stream) => {
-                const audio = document.createElement('AUDIO');
+                const audio = document.createElement('audio');
                 audio.id = 'remoteAudio' + call.peer;
                 document.body.appendChild(audio);
                 audio.srcObject = stream;
@@ -85,20 +131,20 @@ export class PeerManager extends Component {
         });
     }
 
-    kick(id) {
+    kick(id: string) {
         this.currentDataPackage['disconnect'] = this.currentDataPackage['disconnect'] || [];
         this.currentDataPackage['disconnect'].push(id);
         this._removePlayer(id);
     }
 
-    _onHostOpen(id) {
+    _onHostOpen(id: string) {
         isHost = true;
         this.serverId = id;
-        this.activePlayers[this.serverId] = {};
+        this.activePlayers[this.serverId] = null;
         for (const cb of this.connectionEstablishedCallbacks) cb();
     }
 
-    _onHostConnected(connection) {
+    _onHostConnected(connection: DataConnection) {
         this._hostPlayerJoined(connection.peer, connection.metadata.username);
         this.connections.push(connection);
         connection.on('open', () => {
@@ -113,9 +159,10 @@ export class PeerManager extends Component {
         this.object.setTranslationWorld([0, 0, 0]);
     }
 
-    _onHostDataReceived(data, connection) {
-        if (data.transforms && this.activePlayers[connection.peer]) {
-            this.activePlayers[connection.peer].setTransforms(data.transforms);
+    _onHostDataReceived(data: any, connection: DataConnection) {
+        const activePlayer = this.activePlayers[connection.peer];
+        if (data.transforms && activePlayer) {
+            activePlayer.setTransforms(data.transforms);
         }
 
         for (const key of Object.keys(data)) {
@@ -127,7 +174,7 @@ export class PeerManager extends Component {
         this.currentDataPackage[connection.peer] = data;
     }
 
-    _onHostConnectionClose(connection) {
+    _onHostConnectionClose(connection: DataConnection) {
         this._removePlayer(connection.peer);
         this.object.setTranslationWorld([0, -1, 0]);
         this.disconnect();
@@ -136,8 +183,10 @@ export class PeerManager extends Component {
         this.currentDataPackage['disconnect'].push(connection.peer);
     }
 
-    _hostPlayerJoined(id) {
-        let newPlayer = this.networkPlayerSpawner.getEntity();
+    _hostPlayerJoined(id: string, username: string) {
+        if(!this.networkPlayerSpawner) throw new Error('networkPlayerSpawner is not set');
+        let newPlayer = this.networkPlayerSpawner.getEntity(username);
+        if(!newPlayer) throw new Error('Could not spawn player');
         this.activePlayers[id] = newPlayer;
         this.currentDataPackage.joinedPlayers = this.currentDataPackage.joinedPlayers || [];
         this.currentDataPackage.joinedPlayers.push(id);
@@ -152,7 +201,8 @@ export class PeerManager extends Component {
         this.connect(this.serverId);
     }
 
-    connect(id) {
+    connect(id: string) {
+        if(!Peer) throw new Error('Peer object not found');
         if (!id) return console.error('peer-manager: Connection id parameter missing');
         // Already initialized?
         if (this.peer) return;
@@ -169,7 +219,7 @@ export class PeerManager extends Component {
             this.calls[call.peer] = call;
             call.answer(this.localStream);
             call.on('stream', (stream) => {
-                const audio = document.createElement('AUDIO');
+                const audio = document.createElement('audio');
                 audio.id = 'remoteAudio' + id;
                 document.body.appendChild(audio);
                 audio.srcObject = stream;
@@ -194,7 +244,7 @@ export class PeerManager extends Component {
         for (const cb of this.connectionEstablishedCallbacks) cb();
     }
 
-    _onClientDataReceived(data) {
+    _onClientDataReceived(data: any) {
         const registeredCallbacksKeys = Object.keys(this.registeredNetworkCallbacks);
         const joined = 'joined' in data;
 
@@ -204,14 +254,15 @@ export class PeerManager extends Component {
                 for (let j = 0; j < data.joinedPlayers.length; j++) {
                     const p = data.joinedPlayers[j];
                     // if the join id is the same, ignore
-                    if (p == this.peer.id || this.activePlayers[p]) continue;
+                    if (p == this.peer!.id || this.activePlayers[p]) continue;
                     if (!joined && p != this.serverId) {
                         setTimeout(() => {
                             this.call(p);
                         }, Math.floor(500 * j));
                     }
-
-                    const newPlayer = this.networkPlayerSpawner.getEntity();
+                    // TODO: Relay name from host to other players within joinedPlayers
+                    const newPlayer = this.networkPlayerSpawner?.getEntity("dummy");
+                    if(!newPlayer) throw new Error("Could not spawn player");
                     this.activePlayers[p] = newPlayer;
                     for (const cb of this.clientJoinedCallbacks) cb(p, newPlayer);
                 }
@@ -223,11 +274,12 @@ export class PeerManager extends Component {
                 for (const v of value) this._removePlayer(v);
             }
 
-            if (this.activePlayers[key]) {
+            const activePlayer = this.activePlayers[key];
+            if (activePlayer) {
                 const values = Object.keys(value);
                 for (const v of values) {
                     if (v == 'transforms') {
-                        this.activePlayers[key].setTransforms(value.transforms);
+                        activePlayer.setTransforms(value.transforms);
                         continue;
                     }
 
@@ -247,7 +299,7 @@ export class PeerManager extends Component {
         for (const player of players) this._removePlayer(player);
     }
 
-    _removePlayer(peerId) {
+    _removePlayer(peerId: string) {
         if (!this.activePlayers[peerId]) return;
 
         if (this.calls[peerId]) {
@@ -266,23 +318,22 @@ export class PeerManager extends Component {
             }
         }
 
-        if (!this.activePlayers[peerId]) return;
-
-        if (Object.keys(this.activePlayers[peerId]).length !== 0) {
-            this.activePlayers[peerId].reset();
-            this.networkPlayerSpawner.returnEntity(this.activePlayers[peerId]);
+        const activePlayer = this.activePlayers[peerId];
+        if (activePlayer) {
+            activePlayer.reset();
+            this.networkPlayerSpawner?.returnEntity(activePlayer);
         }
         delete this.activePlayers[peerId];
     }
 
     // All functions
-    _onDisconnected(connection) {
+    _onDisconnected() {
         this._removeAllPlayers();
         this.disconnect();
-        for (let cb of this.disconnectCallbacks) cb(connection.peer);
+        for (let cb of this.disconnectCallbacks) cb();
     }
 
-    call(id) {
+    call(id: string) {
         if (!this.voiceEnabled) return;
 
         if (!this.localStream) {
@@ -291,10 +342,14 @@ export class PeerManager extends Component {
             console.error('Cannot call: no audio stream');
             return;
         }
+        if (!this.peer) {
+            console.error('Cannot call: no peer connection');
+            return;
+        }
         const call = this.peer.call(id, this.localStream);
         this.calls[id] = call;
         call.on('stream', (stream) => {
-            const audio = document.createElement('AUDIO');
+            const audio = document.createElement('audio');
             audio.id = id;
             document.body.appendChild(audio);
             audio.srcObject = stream;
@@ -304,6 +359,9 @@ export class PeerManager extends Component {
     }
 
     _clientOnOpen() {
+        if(!this.connectionId) throw new Error('connectionId not set');
+        if(!this.peer) throw new Error('No peer connection');
+
         this.connection = this.peer.connect(this.connectionId, {
             // reliable: true,
             metadata: {username: 'TestName'},
@@ -317,36 +375,36 @@ export class PeerManager extends Component {
         if (this.peer) this.peer.destroy();
     }
 
-    addConnectionEstablishedCallback(f) {
+    addConnectionEstablishedCallback(f: () => void) {
         this.connectionEstablishedCallbacks = this.connectionEstablishedCallbacks || [];
         this.connectionEstablishedCallbacks.push(f);
     }
 
-    removeConnectionEstablishedCallback(f) {
+    removeConnectionEstablishedCallback(f: () => void) {
         const index = this.connectionEstablishedCallbacks.indexOf(f);
         if (index <= -1) return;
 
         this.connectionEstablishedCallbacks.splice(index, 1);
     }
 
-    addClientJoinedCallback(f) {
+    addClientJoinedCallback(f: () => void) {
         this.clientJoinedCallbacks = this.clientJoinedCallbacks || [];
         this.clientJoinedCallbacks.push(f);
     }
 
-    removeClientJoinedCallback(f) {
+    removeClientJoinedCallback(f: () => void) {
         const index = this.clientJoinedCallbacks.indexOf(f);
         if (index <= -1) return;
 
         this.clientJoinedCallbacks.splice(index, 1);
     }
 
-    addDisconnectCallback(f) {
+    addDisconnectCallback(f: () => void) {
         this.disconnectCallbacks = this.disconnectCallbacks || [];
         this.disconnectCallbacks.push(f);
     }
 
-    removeDisconnectCallback(f) {
+    removeDisconnectCallback(f: () => void) {
         const index = this.disconnectCallbacks.indexOf(f);
         if (index <= -1) return;
 
@@ -354,30 +412,30 @@ export class PeerManager extends Component {
     }
 
     /* @deprecated Function was renamed to correct spelling */
-    addNetworkDataRecievedCallback(...args) {
-        return this.addNetworkDataReceivedCallback(...args);
+    addNetworkDataRecievedCallback(key: string, f: () => void) {
+        return this.addNetworkDataReceivedCallback(key, f);
     }
 
-    addNetworkDataReceivedCallback(key, f) {
+    addNetworkDataReceivedCallback(key: string, f: () => void) {
         this.registeredNetworkCallbacks = this.registeredNetworkCallbacks || {};
         this.registeredNetworkCallbacks[key] = f;
     }
 
     /* @deprecated Function was renamed to correct spelling */
-    removeNetworkDataRecievedCallback(...args) {
-        return this.removeNetworkDataReceivedCallback(...args);
+    removeNetworkDataRecievedCallback(key: string) {
+        return this.removeNetworkDataReceivedCallback(key);
     }
 
-    removeNetworkDataReceivedCallback(key) {
+    removeNetworkDataReceivedCallback(key: string) {
         delete this.registeredNetworkCallbacks[key];
     }
 
-    sendPackage(key, data) {
+    sendPackage(key: string, data: any) {
         this.currentDataPackage[key] = data;
     }
 
-    sendPackageImmediately(key, data) {
-        let p = {};
+    sendPackageImmediately(key: string, data: any) {
+        let p: any = {};
         p[key] = data;
 
         if (this.connection) {
@@ -389,28 +447,35 @@ export class PeerManager extends Component {
     }
 
     toggleMute() {
+        if(!this.localStream) return;
         this.localStream.getTracks()[0].enabled = !this.localStream.getTracks()[0].enabled;
     }
 
-    setOwnMute(mute) {
+    setOwnMute(mute: boolean) {
+        if(!this.localStream) return;
         this.localStream.getTracks()[0].enabled = !mute;
     }
 
-    setOtherMute(id, mute) {
+    setOtherMute(id: string, mute: boolean) {
         if (this.streams[id]) this.streams[id].getTracks()[0].enabled = !mute;
     }
 
-    update(dt) {
+    updateTransforms() {
+        if(this.playerHead) this.headDualQuat.set(this.playerHead.getTransformWorld(tempTranform));
+        if(this.playerRightHand) this.rightHandDualQuat.set(this.playerRightHand.getTransformWorld(tempTranform));
+        if(this.playerLeftHand) this.leftHandDualQuat.set(this.playerLeftHand.getTransformWorld(tempTranform));
+
+    }
+
+    update(dt: number) {
         if (!this.connection && this.connections.length == 0) return;
 
         this.currentTime += dt;
         if (this.currentTime < this.networkSendFrequencyInS) return;
 
         this.currentTime = 0.0;
-
-        this.headDualQuat.set(this.playerHead.transformWorld);
-        this.rightHandDualQuat.set(this.playerRightHand.transformWorld);
-        this.leftHandDualQuat.set(this.playerLeftHand.transformWorld);
+        
+        this.updateTransforms();
 
         if (this.connections.length) {
             this.currentDataPackage[this.serverId] = {
@@ -432,7 +497,7 @@ export class PeerManager extends Component {
                 );
                 if (Object.keys(pkg).length) con.send(pkg);
             }
-        } else {
+        } else if(this.connection) {
             this.currentDataPackage.transforms = {
                 head: this.headDualQuat,
                 rightHand: this.rightHandDualQuat,
@@ -450,28 +515,41 @@ export class PeerNetworkedPlayerPool extends Component {
     static TypeName = 'peer-networked-player-pool';
     static Properties = {};
 
+    inactivePool: PeerNetworkedPlayer[] = [];
+
     init() {
-        this.inactivePool = [];
         for (let c of this.object.children) {
-            this.inactivePool.push(c.getComponent(PeerNetworkedPlayer));
+            const component = c.getComponent(PeerNetworkedPlayer);
+            if(component) this.inactivePool.push(component);
         }
     }
 
-    getEntity() {
-        if (this.inactivePool.length) return this.inactivePool.shift();
+    getEntity(username?: string) {
+        if (this.inactivePool.length) {
+            const component = this.inactivePool.shift();
+            if(!component) throw new Error('PeerNetworkedPlayerPool contained object without PeerNetworkedPlayer component');
+            if(username) component.setName(username);
+            return component;
+        }
         console.error('peer-networked-player-pool: No more inactive entities');
+        return null;
     }
 
-    returnEntity(entity) {
+    returnEntity(entity: PeerNetworkedPlayer) {
         this.inactivePool.push(entity);
     }
 }
 
 export class PeerNetworkedPlayer extends Component {
     static TypeName = 'peer-networked-player';
-    static Properties = {
-        nameTextObject: {type: Type.Object},
-    };
+    
+    @property.object()
+    head: Object3D|null = null;
+    nameTextObject: Object3D|null = null;
+    
+    leftHand: Object3D|null = null;
+    rightHand: Object3D|null = null;
+
 
     init() {
         for (let c of this.object.children) {
@@ -481,75 +559,85 @@ export class PeerNetworkedPlayer extends Component {
         }
     }
 
-    setName(name) {
-        if (this.nameTextObject) this.nameTextObject.getComponent('text').text = name;
+    setName(name: string) {
+        if (!this.nameTextObject) return;
+        const textComponent = this.nameTextObject.getComponent(TextComponent);
+        if(textComponent) textComponent.text = name;
     }
 
     reset() {
-        this.head.resetTranslationRotation();
-        this.rightHand.resetTranslationRotation();
-        this.leftHand.resetTranslationRotation();
+        this.head?.resetTranslationRotation();
+        this.rightHand?.resetTranslationRotation();
+        this.leftHand?.resetTranslationRotation();
     }
 
-    setTransforms(transforms) {
-        this.head.transformLocal.set(new Float32Array(transforms.head));
-        this.head.setDirty();
-
-        this.rightHand.transformLocal.set(new Float32Array(transforms.rightHand));
-        this.rightHand.setDirty();
-
-        this.leftHand.transformLocal.set(new Float32Array(transforms.leftHand));
-        this.leftHand.setDirty();
+    setTransforms(transforms: PlayerTransforms) {
+        tempVec.set(transforms.head)
+        this.head?.setTransformLocal(tempVec);
+        tempVec.set(transforms.rightHand)
+        this.rightHand?.setTransformLocal(tempVec);
+        tempVec.set(transforms.leftHand)
+        this.leftHand?.setTransformLocal(tempVec);
     }
 }
 
 export class PeerNetworkedPlayerSpawner extends Component {
     static TypeName = 'peer-networked-player-spawner';
     static Properties = {
-        headMesh: {type: Type.Mesh},
-        headMaterial: {type: Type.Material},
-        leftHandMesh: {type: Type.Mesh},
-        leftHandMaterial: {type: Type.Material},
-        rightHandMesh: {type: Type.Mesh},
-        rightHandMaterial: {type: Type.Material},
+
     };
     static Dependencies = [PeerNetworkedPlayer];
 
-    init() {
-        this.count = 0;
-    }
+    @property.mesh()
+    headMesh: Mesh|null = null;
 
-    getEntity() {
-        const player = this.engine.scene.addObject(1);
-        const children = this.engine.scene.addObjects(3, player);
+    @property.material()
+    headMaterial: Material|null = null;
+    
+    @property.mesh()
+    leftHandMesh: Mesh|null = null;
+    
+    @property.material()
+    leftHandMaterial: Material|null = null;
+    
+    @property.mesh()
+    rightHandMesh: Mesh|null = null;
+    
+    @property.material()
+    rightHandMaterial: Material|null = null;
+    
+    count: number = 0;
+
+    getEntity(username?: string) {
+        const player = this.engine.scene.addObject(null);
+        const children = this.engine.scene.addObjects(3, player, 3);
 
         children[0].name = 'Head';
-        children[0].addComponent('mesh', {
+        children[0].addComponent(MeshComponent, {
             mesh: this.headMesh,
             material: this.headMaterial,
         });
 
         children[1].name = 'LeftHand';
-        children[1].addComponent('mesh', {
+        children[1].addComponent(MeshComponent, {
             mesh: this.leftHandMesh,
             material: this.leftHandMaterial,
         });
 
         children[2].name = 'RightHand';
-        children[2].addComponent('mesh', {
+        children[2].addComponent(MeshComponent, {
             mesh: this.rightHandMesh,
             material: this.rightHandMaterial,
         });
 
-        player.name = `Player ${this.count++}`;
+        player.name = username ?? `Player ${this.count++}`;
         return player.addComponent(PeerNetworkedPlayer);
     }
 
-    returnEntity(player) {
-        console.log('returning:', player);
-        player.children.forEach((c) => {
+    returnEntity(player: PeerNetworkedPlayer) {
+        player.object.children.forEach((c: Object3D) => {
             c.active = false;
         });
-        player.active = false;
+        player.object.active = false;
     }
 }
