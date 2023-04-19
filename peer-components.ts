@@ -461,9 +461,9 @@ export class PeerManager extends Component {
     }
 
     updateTransforms() {
-        if(this.playerHead) this.headDualQuat.set(this.playerHead.getTransformWorld(tempTranform));
-        if(this.playerRightHand) this.rightHandDualQuat.set(this.playerRightHand.getTransformWorld(tempTranform));
-        if(this.playerLeftHand) this.leftHandDualQuat.set(this.playerLeftHand.getTransformWorld(tempTranform));
+        if(this.playerHead) this.headDualQuat.set(this.playerHead.getTransformWorld(tempTransform));
+        if(this.playerRightHand) this.rightHandDualQuat.set(this.playerRightHand.getTransformWorld(tempTransform));
+        if(this.playerLeftHand) this.leftHandDualQuat.set(this.playerLeftHand.getTransformWorld(tempTransform));
 
     }
 
