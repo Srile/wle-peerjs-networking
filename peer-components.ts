@@ -9,7 +9,7 @@ interface PeerConstructor {
 
 let Peer: PeerConstructor|null = null;
 
-const tempTranform = new Float32Array(8);
+const tempTransform = new Float32Array(8);
 const tempVec: Float32Array = new Float32Array(3);
 
 interface PlayerTransforms {
@@ -572,12 +572,12 @@ export class PeerNetworkedPlayer extends Component {
     }
 
     setTransforms(transforms: PlayerTransforms) {
-        tempVec.set(transforms.head)
-        this.head?.setTransformLocal(tempVec);
-        tempVec.set(transforms.rightHand)
-        this.rightHand?.setTransformLocal(tempVec);
-        tempVec.set(transforms.leftHand)
-        this.leftHand?.setTransformLocal(tempVec);
+        tempTransform.set(transforms.head)
+        this.head?.setTransformLocal(tempTransform);
+        tempTransform.set(transforms.rightHand)
+        this.rightHand?.setTransformLocal(tempTransform);
+        tempTransform.set(transforms.leftHand)
+        this.leftHand?.setTransformLocal(tempTransform);
     }
 }
 
