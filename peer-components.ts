@@ -9,6 +9,8 @@ interface PeerConstructor {
 
 let Peer: PeerConstructor|null = null;
 
+const tempTransform = new Float32Array(8);
+
 interface PlayerTransforms {
     head: Float32Array;
     rightHand: Float32Array;
@@ -53,8 +55,6 @@ export class PeerManager extends Component {
     connection?: DataConnection|null = null;
 
     connectionId: string|null = null
-
-    tempTransform = new Float32Array(8);
 
     /* Properties */
     @property.string('THISISAWONDERLANDENGINEPLACEHOLDER')
@@ -460,9 +460,9 @@ export class PeerManager extends Component {
     }
 
     updateTransforms() {
-        if(this.playerHead) this.headDualQuat.set(this.playerHead.getTransformWorld(this.tempTransform));
-        if(this.playerRightHand) this.rightHandDualQuat.set(this.playerRightHand.getTransformWorld(this.tempTransform));
-        if(this.playerLeftHand) this.leftHandDualQuat.set(this.playerLeftHand.getTransformWorld(this.tempTransform));
+        if(this.playerHead) this.headDualQuat.set(this.playerHead.getTransformWorld(tempTransform));
+        if(this.playerRightHand) this.rightHandDualQuat.set(this.playerRightHand.getTransformWorld(tempTransform));
+        if(this.playerLeftHand) this.leftHandDualQuat.set(this.playerLeftHand.getTransformWorld(tempTransform));
     }
 
     update(dt: number) {
@@ -548,7 +548,6 @@ export class PeerNetworkedPlayer extends Component {
     leftHand: Object3D|null = null;
     rightHand: Object3D|null = null;
 
-    tempTransform = new Float32Array(8);
 
     init() {
         for (let c of this.object.children) {
@@ -571,12 +570,12 @@ export class PeerNetworkedPlayer extends Component {
     }
 
     setTransforms(transforms: PlayerTransforms) {
-        this.tempTransform.set(new Float32Array(transforms.head))        
-        this.head?.setTransformLocal(this.tempTransform);
-        this.tempTransform.set(new Float32Array(transforms.rightHand))
-        this.rightHand?.setTransformLocal(this.tempTransform);
-        this.tempTransform.set(transforms.leftHand)
-        this.leftHand?.setTransformLocal(new Float32Array(this.tempTransform));
+        tempTransform.set(new Float32Array(transforms.head))        
+        this.head?.setTransformLocal(tempTransform);
+        tempTransform.set(new Float32Array(transforms.rightHand))
+        this.rightHand?.setTransformLocal(tempTransform);
+        tempTransform.set(transforms.leftHand)
+        this.leftHand?.setTransformLocal(new Float32Array(tempTransform));
     }
 }
 
