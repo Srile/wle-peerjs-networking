@@ -1,4 +1,4 @@
-import {Component, Type} from '@wonderlandengine/api';
+import {Component, InputComponent, Type} from '@wonderlandengine/api';
 
 export class ControllerTeleportComponent extends Component {
     static TypeName = 'controller-teleport-component';
@@ -20,7 +20,7 @@ export class ControllerTeleportComponent extends Component {
         this.thumbstickActivationThreshhold = -0.7;
         this.prevThumbstickYAxisInput = 0;
         this.prevThumbstickXAxisInput = 0;
-        this.input = this.object.getComponent('input');
+        this.input = this.object.getComponent(InputComponent);
         this._tempVec = [0, 0, 0];
         this._camRotation = 0;
         this._currentIndicatorRotation = 0;
@@ -78,11 +78,6 @@ export class ControllerTeleportComponent extends Component {
             if (this.hitSpot && this.camRoot) {
                 this.camRoot.resetTransform();
 
-                // this.session.requestReferenceSpace("local").then(function(xrReferenceSpace) {
-                //    this.session.requestAnimationFrame(function(time, xrFrame) {
-                //      console.log(xrFrame.getViewerPose(xrReferenceSpace).transform)
-                //    })
-                // }.bind(this))
                 this.hitSpot[1] = 0;
                 this.cam.getForward(this._tempVec);
                 this._tempVec[1] = 0;
@@ -101,9 +96,9 @@ export class ControllerTeleportComponent extends Component {
 
         if (this.isIndicating && this.teleportIndicatorMeshObject && this.input) {
             let origin = [0, 0, 0];
-            glMatrix.quat2.getTranslation(origin, this.object.transformWorld);
+            glMatrix.quat2.getTranslation(origin, this.object.getTransformWorld());
 
-            let quat = this.object.transformWorld;
+            let quat = this.object.getTransformWorld();
 
             let forwardDirection = [0, 0, 0];
             glMatrix.vec3.transformQuat(forwardDirection, [0, 0, -1], quat);

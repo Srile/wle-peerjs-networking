@@ -1,4 +1,6 @@
-import {Component, Type} from '@wonderlandengine/api';
+import { CollisionComponent, Component, Type, Object3D } from '@wonderlandengine/api';
+import { Cursor, CursorTarget } from '@wonderlandengine/components';
+import { PeerManager } from 'wle-peerjs-networking';
 
 export class NetworkButtons extends Component {
     static TypeName = 'network-buttons';
@@ -9,8 +11,11 @@ export class NetworkButtons extends Component {
         joinButton: {type: Type.Object},
     };
 
+    /** @type {Object3D} */
+    peerManagerObject;
+
     start() {
-        this.pm = this.peerManagerObject.getComponent('peer-manager');
+        this.pm = this.peerManagerObject.getComponent(PeerManager);
 
         /* If hostButton or joinButton are not specified, we search
          * for them by name */
@@ -19,14 +24,14 @@ export class NetworkButtons extends Component {
             if (c.name == 'JoinButton') this.joinButton = this.joinButton || c;
         }
 
-        this.hostButtonCollider = this.hostButton.getComponent('collision');
+        this.hostButtonCollider = this.hostButton.getComponent(CollisionComponent);
         this.hostButton
-            .getComponent('cursor-target')
+            .getComponent(CursorTarget)
             .addClickFunction(this.pm.host.bind(this.pm));
 
-        this.joinButtonCollider = this.joinButton.getComponent('collision');
+        this.joinButtonCollider = this.joinButton.getComponent(CollisionComponent);
         this.joinButton
-            .getComponent('cursor-target')
+            .getComponent(CursorTarget)
             .addClickFunction(this.pm.join.bind(this.pm));
 
         this.pm.addConnectionEstablishedCallback(this.hide.bind(this));
@@ -34,8 +39,8 @@ export class NetworkButtons extends Component {
     }
 
     show() {
-        if (this.cursor.getComponent('cursor').setEnabled)
-            this.cursor.getComponent('cursor').setEnabled(true);
+        if (this.cursor.getComponent(Cursor).setEnabled)
+            this.cursor.getComponent(Cursor).setEnabled(true);
         this.hostButtonCollider.active = true;
         this.joinButtonCollider.active = true;
         this.object.setTranslationLocal([0, 0, -3]);
@@ -43,8 +48,8 @@ export class NetworkButtons extends Component {
 
     hide() {
         /* Old versions of the cursor component don't have the setEnabled function */
-        if (this.cursor.getComponent('cursor').setEnabled)
-            this.cursor.getComponent('cursor').setEnabled(false);
+        if (this.cursor.getComponent(Cursor).setEnabled)
+            this.cursor.getComponent(Cursor).setEnabled(false);
         this.hostButtonCollider.active = false;
         this.joinButtonCollider.active = false;
         this.object.setTranslationLocal([0, -300, 0]);

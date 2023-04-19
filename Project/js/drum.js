@@ -1,4 +1,6 @@
-import {Component, Type} from '@wonderlandengine/api';
+import { CollisionComponent, Component, Type} from '@wonderlandengine/api';
+import { HowlerAudioSource } from '@wonderlandengine/components';
+import { PeerManager } from 'wle-peerjs-networking';
 import * as Tone from 'tone';
 
 export class Drum extends Component {
@@ -8,13 +10,13 @@ export class Drum extends Component {
     };
 
     start() {
-        this.networkComponent = this.networkObject.getComponent('peer-manager');
+        this.networkComponent = this.networkObject.getComponent(PeerManager);
         this.networkComponent.addNetworkDataRecievedCallback(
             'drumPlay',
             this.playSound.bind(this)
         );
-        this.sound = this.object.getComponent('howler-audio-source');
-        this.collision = this.object.getComponent('collision');
+        this.sound = this.object.getComponent(HowlerAudioSource);
+        this.collision = this.object.getComponent(CollisionComponent);
         this.lastOverlaps = [];
         this.tempVec = new Float32Array(3);
         this.synth = new Tone.MembraneSynth().toDestination();
