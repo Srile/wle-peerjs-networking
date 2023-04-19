@@ -1,6 +1,6 @@
 {
   "name": "wle-peerjs-networking",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A small set of components for [Wonderland Engine](https://wonderlandengine.com/) for basic networking functionality using [peer.js](https://peerjs.com/).",
   "main": "./dist/peer-components.js",
   "module": "./dist/peer-components.js",
