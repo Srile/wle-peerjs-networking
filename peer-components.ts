@@ -541,13 +541,10 @@ export class PeerNetworkedPlayerPool extends Component {
 export class PeerNetworkedPlayer extends Component {
     static TypeName = 'peer-networked-player';
     
-    @property.object()
     head: Object3D|null = null;
-    nameTextObject: Object3D|null = null;
-    
     leftHand: Object3D|null = null;
     rightHand: Object3D|null = null;
-
+    nameTextObject: Object3D|null = null;
 
     init() {
         for (let c of this.object.children) {
@@ -570,20 +567,19 @@ export class PeerNetworkedPlayer extends Component {
     }
 
     setTransforms(transforms: PlayerTransforms) {
-        tempTransform.set(new Float32Array(transforms.head))        
+        tempTransform.set(new Float32Array(transforms.head));
         this.head?.setTransformLocal(tempTransform);
-        tempTransform.set(new Float32Array(transforms.rightHand))
+
+        tempTransform.set(new Float32Array(transforms.rightHand));
         this.rightHand?.setTransformLocal(tempTransform);
-        tempTransform.set(transforms.leftHand)
-        this.leftHand?.setTransformLocal(new Float32Array(tempTransform));
+        
+        tempTransform.set(new Float32Array(transforms.leftHand));
+        this.leftHand?.setTransformLocal(tempTransform);
     }
 }
 
 export class PeerNetworkedPlayerSpawner extends Component {
     static TypeName = 'peer-networked-player-spawner';
-    static Properties = {
-
-    };
     static Dependencies = [PeerNetworkedPlayer];
 
     @property.mesh()
