@@ -109,7 +109,7 @@
                 {
                     "type": "light",
                     "light": {
-                        "attenuation": 0.1
+                        "intensity": 3.3329999
                     }
                 }
             ],
@@ -136,7 +136,7 @@
                 {
                     "type": "light",
                     "light": {
-                        "attenuation": 0.1
+                        "intensity": 3.3329999
                     }
                 }
             ],
@@ -844,20 +844,7 @@
             ]
         },
         "88": {
-            "name": "Environment",
-            "components": [
-                {
-                    "type": "howler-audio-source",
-                    "howler-audio-source": {
-                        "loop": true,
-                        "autoplay": true,
-                        "volume": 0.15,
-                        "spatial": false,
-                        "src": "audio/infinitepeace.mp3"
-                    },
-                    "active": true
-                }
-            ]
+            "name": "Environment"
         },
         "89": {
             "name": "Cube",
@@ -1319,13 +1306,6 @@
                     }
                 },
                 {
-                    "type": "howler-audio-source",
-                    "howler-audio-source": {
-                        "src": "audio/toms.wav",
-                        "volume": 0.4
-                    }
-                },
-                {
                     "type": "drum",
                     "drum": {
                         "networkObject": "32"
@@ -1462,6 +1442,24 @@
             "link": {
                 "name": "texture_1",
                 "file": "glb\\static-quest-controllers.glb"
+            }
+        },
+        "262": {
+            "link": {
+                "name": "Map #0",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "263": {
+            "link": {
+                "name": "Map #1",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "264": {
+            "link": {
+                "name": "Map #3",
+                "file": "glb\\Barrel_01.FBX"
             }
         }
     },
@@ -1707,6 +1705,96 @@
                 "name": "TileFeedback.frag",
                 "file": "default"
             }
+        },
+        "242": {
+            "link": {
+                "name": "lib\\Color.glsl",
+                "file": "default"
+            }
+        },
+        "243": {
+            "link": {
+                "name": "lib\\Compatibility.frag",
+                "file": "default"
+            }
+        },
+        "244": {
+            "link": {
+                "name": "lib\\CoordinateSystems.glsl",
+                "file": "default"
+            }
+        },
+        "245": {
+            "link": {
+                "name": "lib\\GI.frag",
+                "file": "default"
+            }
+        },
+        "246": {
+            "link": {
+                "name": "lib\\Inputs.frag",
+                "file": "default"
+            }
+        },
+        "247": {
+            "link": {
+                "name": "lib\\Lights.frag",
+                "file": "default"
+            }
+        },
+        "248": {
+            "link": {
+                "name": "lib\\Materials.frag",
+                "file": "default"
+            }
+        },
+        "249": {
+            "link": {
+                "name": "lib\\Math.glsl",
+                "file": "default"
+            }
+        },
+        "250": {
+            "link": {
+                "name": "lib\\Packing.frag",
+                "file": "default"
+            }
+        },
+        "251": {
+            "link": {
+                "name": "lib\\Quaternion.glsl",
+                "file": "default"
+            }
+        },
+        "252": {
+            "link": {
+                "name": "lib\\Slug.frag",
+                "file": "default"
+            }
+        },
+        "253": {
+            "link": {
+                "name": "lib\\Slug.vert",
+                "file": "default"
+            }
+        },
+        "254": {
+            "link": {
+                "name": "lib\\Surface.frag",
+                "file": "default"
+            }
+        },
+        "255": {
+            "link": {
+                "name": "lib\\Textures.frag",
+                "file": "default"
+            }
+        },
+        "257": {
+            "link": {
+                "name": "lib\\Uniforms.glsl",
+                "file": "default"
+            }
         }
     },
     "settings": {
@@ -1714,9 +1802,8 @@
             "name": "PeerTest",
             "version": [
                 1,
-                0,
-                0,
-                2
+                1,
+                6
             ]
         },
         "vr": {
@@ -1755,14 +1842,33 @@
             }
         }
     },
-    "animations": {},
+    "animations": {
+        "265": {
+            "link": {
+                "name": "Take 001",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        }
+    },
     "skins": {},
-    "files": [
-        "glb/teleport-indicator.glb",
-        "glb/Barrel_01.FBX",
-        "fbx/Lentes VR/LentesVR.fbx",
-        "glb/static-quest-controllers.glb"
-    ],
+    "files": {
+        "258": {
+            "fileName": "glb/teleport-indicator.glb",
+            "importerName": ""
+        },
+        "259": {
+            "fileName": "glb/Barrel_01.FBX",
+            "importerName": ""
+        },
+        "260": {
+            "fileName": "fbx/Lentes VR/LentesVR.fbx",
+            "importerName": "AssimpImporter"
+        },
+        "261": {
+            "fileName": "glb/static-quest-controllers.glb",
+            "importerName": ""
+        }
+    },
     "pipelines": {
         "114": {
             "link": {
@@ -1795,6 +1901,9 @@
             "link": {
                 "name": "Phong Opaque",
                 "file": "default"
+            },
+            "features": {
+                "DEPRECATED_LIGHT_ATTENUATION": true
             }
         },
         "124": {
@@ -1803,13 +1912,17 @@
                 "file": "default"
             },
             "features": {
-                "ALPHA_MASKED": true
+                "ALPHA_MASKED": true,
+                "DEPRECATED_LIGHT_ATTENUATION": true
             }
         },
         "127": {
             "link": {
                 "name": "Foliage",
                 "file": "default"
+            },
+            "features": {
+                "DEPRECATED_LIGHT_ATTENUATION": true
             }
         },
         "128": {
@@ -1849,17 +1962,29 @@
             "link": {
                 "name": "Phong Normalmapped",
                 "file": "default"
+            },
+            "features": {
+                "DEPRECATED_LIGHT_ATTENUATION": true
             }
         },
         "239": {
             "link": {
                 "name": "Phong Lightmapped",
                 "file": "default"
+            },
+            "features": {
+                "DEPRECATED_LIGHT_ATTENUATION": true
             }
         },
         "240": {
             "link": {
                 "name": "Sky",
+                "file": "default"
+            }
+        },
+        "256": {
+            "link": {
+                "name": "TileFeedback",
                 "file": "default"
             }
         }

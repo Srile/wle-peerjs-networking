@@ -1,4 +1,4 @@
-import {Component, Material, Mesh, MeshComponent, Object3D, TextComponent, Type} from '@wonderlandengine/api';
+import {Component, Material, Mesh, MeshComponent, Object3D, TextComponent, Type, WonderlandEngine} from '@wonderlandengine/api';
 import { property } from '@wonderlandengine/api/decorators.js';
 import type { DataConnection, MediaConnection, Peer as PeerType } from 'peerjs';
 export let isHost = false;
@@ -78,6 +78,12 @@ export class PeerManager extends Component {
     @property.bool(true)
     voiceEnabled: boolean = true;
 
+    static onRegister(engine: WonderlandEngine) {
+        engine.registerComponent(PeerNetworkedPlayerPool);
+        engine.registerComponent(PeerNetworkedPlayerSpawner);
+        engine.registerComponent(PeerNetworkedPlayer);
+      }
+
     init() {
         /* We need to require() peerjs, since it uses 'navigator' in the
          * global scope, which isn't available when Wonderland Editor evaluates
@@ -155,7 +161,7 @@ export class PeerManager extends Component {
         });
         connection.on('close', () => this._onHostConnectionClose(connection));
         connection.on('data', (data) => this._onHostDataReceived(data, connection));
-        this.object.setTranslationWorld([0, 0, 0]);
+        this.object.setPositionWorld([0, 0, 0]);
     }
 
     _onHostDataReceived(data: any, connection: DataConnection) {
@@ -175,7 +181,7 @@ export class PeerManager extends Component {
 
     _onHostConnectionClose(connection: DataConnection) {
         this._removePlayer(connection.peer);
-        this.object.setTranslationWorld([0, -1, 0]);
+        this.object.setPositionWorld([0, -1, 0]);
         this.disconnect();
 
         this.currentDataPackage['disconnect'] = this.currentDataPackage['disconnect'] || [];
@@ -319,7 +325,7 @@ export class PeerManager extends Component {
 
         const activePlayer = this.activePlayers[peerId];
         if (activePlayer) {
-            activePlayer.reset();
+            activePlayer.resetPositionRotation();
             this.networkPlayerSpawner?.returnEntity(activePlayer);
         }
         delete this.activePlayers[peerId];
@@ -560,10 +566,10 @@ export class PeerNetworkedPlayer extends Component {
         if(textComponent) textComponent.text = name;
     }
 
-    reset() {
-        this.head?.resetTranslationRotation();
-        this.rightHand?.resetTranslationRotation();
-        this.leftHand?.resetTranslationRotation();
+    resetPositionRotation() {
+        this.head?.resetPositionRotation();
+        this.rightHand?.resetPositionRotation();
+        this.leftHand?.resetPositionRotation();
     }
 
     setTransforms(transforms: PlayerTransforms) {

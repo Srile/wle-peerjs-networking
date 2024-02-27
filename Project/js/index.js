@@ -15,7 +15,6 @@
 import {Cursor} from '@wonderlandengine/components';
 import {CursorTarget} from '@wonderlandengine/components';
 import {HowlerAudioListener} from '@wonderlandengine/components';
-import {HowlerAudioSource} from '@wonderlandengine/components';
 import {MouseLookComponent} from '@wonderlandengine/components';
 import {WasdControlsComponent} from '@wonderlandengine/components';
 import {PeerManager} from 'wle-peerjs-networking';
@@ -30,61 +29,88 @@ import {loadRuntime} from '@wonderlandengine/api';
 import * as API from '@wonderlandengine/api'; // Deprecated: Backward compatibility.
 
 /* wle:auto-constants:start */
-const ProjectName = 'PeerTest';
-const RuntimeBaseName = 'WonderlandRuntime';
-const WithPhysX = false;
-const WithLoader = false;
-const WebXRFramebufferScaleFactor = 1;
-const WebXRRequiredFeatures = ['local-floor',];
-const WebXROptionalFeatures = ['local-floor','hand-tracking','hit-test',];
+const Constants = {
+    ProjectName: 'PeerTest',
+    RuntimeBaseName: 'WonderlandRuntime',
+    WebXRRequiredFeatures: ['local-floor',],
+    WebXROptionalFeatures: ['local-floor','hand-tracking','hit-test',],
+};
+const RuntimeOptions = {
+    physx: false,
+    loader: false,
+    xrFramebufferScaleFactor: 1,
+    xrOfferSession: {
+        mode: 'auto',
+        features: Constants.WebXRRequiredFeatures,
+        optionalFeatures: Constants.WebXROptionalFeatures,
+    },
+    canvas: 'canvas',
+};
 /* wle:auto-constants:end */
 
-const engine = await loadRuntime(RuntimeBaseName, {
-    physx: WithPhysX,
-    loader: WithLoader,
-});
-Object.assign(engine, API); // Deprecated: Backward compatibility.
-window.WL = engine; // Deprecated: Backward compatibility.
+async function main() {
+    const engine = await loadRuntime(Constants.RuntimeBaseName, RuntimeOptions);
+    engine.erasePrototypeOnDestroy = true;
 
-engine.xrFramebufferScaleFactor = WebXRFramebufferScaleFactor;
-engine.onSceneLoaded.once(() => {
-    const el = document.getElementById('version');
-    if (el) setTimeout(() => el.remove(), 2000);
-});
+    Object.assign(engine, API); // Deprecated: Backward compatibility.
 
-/* WebXR setup. */
+    engine.onSceneLoaded.once(() => {
+        const el = document.getElementById('version');
+        if (el) setTimeout(() => el.remove(), 2000);
+    });
 
-function requestSession(mode) {
-    engine
-        .requestXRSession(mode, WebXRRequiredFeatures, WebXROptionalFeatures)
-        .catch((e) => console.error(e));
-}
+    /* WebXR setup. */
 
-function setupButtonsXR() {
-    /* Setup AR / VR buttons */
-    const arButton = document.getElementById('ar-button');
-    if (arButton) {
-        arButton.dataset.supported = engine.arSupported;
-        arButton.addEventListener('click', () => requestSession('immersive-ar'));
+    function requestSession(mode) {
+        engine
+            .requestXRSession(mode, WebXRRequiredFeatures, WebXROptionalFeatures)
+            .catch((e) => console.error(e));
     }
-    const vrButton = document.getElementById('vr-button');
-    if (vrButton) {
-        vrButton.dataset.supported = engine.vrSupported;
-        vrButton.addEventListener('click', () => requestSession('immersive-vr'));
+
+    function setupButtonsXR() {
+        /* Setup AR / VR buttons */
+        const arButton = document.getElementById('ar-button');
+        if (arButton) {
+            arButton.dataset.supported = engine.arSupported;
+            arButton.addEventListener('click', () => requestSession('immersive-ar'));
+        }
+        const vrButton = document.getElementById('vr-button');
+        if (vrButton) {
+            vrButton.dataset.supported = engine.vrSupported;
+            vrButton.addEventListener('click', () => requestSession('immersive-vr'));
+        }
     }
-}
 
-if (document.readyState === 'loading') {
-    window.addEventListener('load', setupButtonsXR);
-} else {
-    setupButtonsXR();
-}
+    function setXRButtonVisibility(active) {
+        const xrButtonContainer = document.querySelector('.xr-button-container');
+        if(xrButtonContainer) {
+            xrButtonContainer.style.display = active ? 'block' : 'none';
+        }
 
-/* wle:auto-register:start */
+        const startBtn = document.getElementById('start-btn');
+        if(startBtn) {
+            startBtn.style.display = active ? 'unset' : 'none';
+        }
+    }
+
+    engine.onXRSessionStart.add(() => {
+        setXRButtonVisibility(false);
+    })
+
+    engine.onXRSessionEnd.add(() => {
+        setXRButtonVisibility(true);
+    })
+
+    if (document.readyState === 'loading') {
+        window.addEventListener('load', setupButtonsXR);
+    } else {
+        setupButtonsXR();
+    }
+
+    /* wle:auto-register:start */
 engine.registerComponent(Cursor);
 engine.registerComponent(CursorTarget);
 engine.registerComponent(HowlerAudioListener);
-engine.registerComponent(HowlerAudioSource);
 engine.registerComponent(MouseLookComponent);
 engine.registerComponent(WasdControlsComponent);
 engine.registerComponent(PeerManager);
@@ -95,7 +121,10 @@ engine.registerComponent(Drum);
 engine.registerComponent(NetworkButtons);
 /* wle:auto-register:end */
 
-engine.scene.load(`${ProjectName}.bin`);
+    engine.scene.load(`${Constants.ProjectName}.bin`);
+}
+
+main();
 
 /* wle:auto-benchmark:start */
 /* wle:auto-benchmark:end */

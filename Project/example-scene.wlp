@@ -109,7 +109,7 @@
                 {
                     "type": "light",
                     "light": {
-                        "attenuation": 0.1
+                        "intensity": 3.3329999
                     }
                 }
             ],
@@ -136,7 +136,7 @@
                 {
                     "type": "light",
                     "light": {
-                        "attenuation": 0.1
+                        "intensity": 3.3329999
                     }
                 }
             ],
@@ -1557,20 +1557,7 @@
             ]
         },
         "88": {
-            "name": "Environment",
-            "components": [
-                {
-                    "type": "howler-audio-source",
-                    "howler-audio-source": {
-                        "loop": true,
-                        "autoplay": true,
-                        "volume": 0.15,
-                        "spatial": false,
-                        "src": "audio/infinitepeace.mp3"
-                    },
-                    "active": true
-                }
-            ]
+            "name": "Environment"
         },
         "89": {
             "name": "Cube",
@@ -2032,13 +2019,6 @@
                     }
                 },
                 {
-                    "type": "howler-audio-source",
-                    "howler-audio-source": {
-                        "src": "audio/toms.wav",
-                        "volume": 0.4
-                    }
-                },
-                {
                     "type": "drum",
                     "drum": {
                         "networkObject": "32"
@@ -2142,6 +2122,24 @@
         "106": {
             "link": {
                 "name": "texture_2",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "164": {
+            "link": {
+                "name": "Map #0",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "165": {
+            "link": {
+                "name": "Map #1",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        },
+        "166": {
+            "link": {
+                "name": "Map #3",
                 "file": "glb\\Barrel_01.FBX"
             }
         }
@@ -2350,6 +2348,96 @@
                 "name": "TileFeedback.frag",
                 "file": "default"
             }
+        },
+        "146": {
+            "link": {
+                "name": "lib\\Color.glsl",
+                "file": "default"
+            }
+        },
+        "147": {
+            "link": {
+                "name": "lib\\Compatibility.frag",
+                "file": "default"
+            }
+        },
+        "148": {
+            "link": {
+                "name": "lib\\CoordinateSystems.glsl",
+                "file": "default"
+            }
+        },
+        "149": {
+            "link": {
+                "name": "lib\\GI.frag",
+                "file": "default"
+            }
+        },
+        "150": {
+            "link": {
+                "name": "lib\\Inputs.frag",
+                "file": "default"
+            }
+        },
+        "151": {
+            "link": {
+                "name": "lib\\Lights.frag",
+                "file": "default"
+            }
+        },
+        "152": {
+            "link": {
+                "name": "lib\\Materials.frag",
+                "file": "default"
+            }
+        },
+        "153": {
+            "link": {
+                "name": "lib\\Math.glsl",
+                "file": "default"
+            }
+        },
+        "154": {
+            "link": {
+                "name": "lib\\Packing.frag",
+                "file": "default"
+            }
+        },
+        "155": {
+            "link": {
+                "name": "lib\\Quaternion.glsl",
+                "file": "default"
+            }
+        },
+        "156": {
+            "link": {
+                "name": "lib\\Slug.frag",
+                "file": "default"
+            }
+        },
+        "157": {
+            "link": {
+                "name": "lib\\Slug.vert",
+                "file": "default"
+            }
+        },
+        "158": {
+            "link": {
+                "name": "lib\\Surface.frag",
+                "file": "default"
+            }
+        },
+        "159": {
+            "link": {
+                "name": "lib\\Textures.frag",
+                "file": "default"
+            }
+        },
+        "161": {
+            "link": {
+                "name": "lib\\Uniforms.glsl",
+                "file": "default"
+            }
         }
     },
     "settings": {
@@ -2357,9 +2445,8 @@
             "name": "PeerTest",
             "version": [
                 1,
-                0,
-                0,
-                2
+                1,
+                6
             ]
         },
         "vr": {
@@ -2398,12 +2485,25 @@
             }
         }
     },
-    "animations": {},
+    "animations": {
+        "167": {
+            "link": {
+                "name": "Take 001",
+                "file": "glb\\Barrel_01.FBX"
+            }
+        }
+    },
     "skins": {},
-    "files": [
-        "glb/teleport-indicator.glb",
-        "glb/Barrel_01.FBX"
-    ],
+    "files": {
+        "162": {
+            "fileName": "glb/teleport-indicator.glb",
+            "importerName": ""
+        },
+        "163": {
+            "fileName": "glb/Barrel_01.FBX",
+            "importerName": ""
+        }
+    },
     "pipelines": {
         "114": {
             "link": {
@@ -2436,6 +2536,9 @@
             "link": {
                 "name": "Phong Opaque",
                 "file": "default"
+            },
+            "features": {
+                "DEPRECATED_LIGHT_ATTENUATION": true
             }
         },
         "124": {
@@ -2444,13 +2547,17 @@
                 "file": "default"
             },
             "features": {
-                "ALPHA_MASKED": true
+                "ALPHA_MASKED": true,
+                "DEPRECATED_LIGHT_ATTENUATION": true
             }
         },
         "127": {
             "link": {
                 "name": "Foliage",
                 "file": "default"
+            },
+            "features": {
+                "DEPRECATED_LIGHT_ATTENUATION": true
             }
         },
         "128": {
@@ -2490,17 +2597,29 @@
             "link": {
                 "name": "Phong Normalmapped",
                 "file": "default"
+            },
+            "features": {
+                "DEPRECATED_LIGHT_ATTENUATION": true
             }
         },
         "143": {
             "link": {
                 "name": "Phong Lightmapped",
                 "file": "default"
+            },
+            "features": {
+                "DEPRECATED_LIGHT_ATTENUATION": true
             }
         },
         "144": {
             "link": {
                 "name": "Sky",
+                "file": "default"
+            }
+        },
+        "160": {
+            "link": {
+                "name": "TileFeedback",
                 "file": "default"
             }
         }
