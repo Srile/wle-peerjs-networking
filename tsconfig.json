@@ -11,6 +11,6 @@
     "experimentalDecorators": true,
   },
 
-  "include": [ "./*.ts", "./*.js" ],
+  "include": [ "./src/*.ts", "./src/*.js" ],
   "exclude": [ "node_modules" ]
 }

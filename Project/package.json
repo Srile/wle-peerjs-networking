@@ -5,7 +5,9 @@
   "main": "js/index.js",
   "type": "module",
   "module": "js/index.js",
-  "scripts": {},
+  "scripts": {
+    "preinstall": "cd .. && npm install && npm run build"
+  },
   "keywords": [
     "wonderland-engine"
   ],
