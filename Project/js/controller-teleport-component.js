@@ -1,4 +1,5 @@
 import {Component, InputComponent, Type} from '@wonderlandengine/api';
+import { vec3, quat2 } from 'gl-matrix';
 
 export class ControllerTeleportComponent extends Component {
     static TypeName = 'controller-teleport-component';
@@ -66,7 +67,7 @@ export class ControllerTeleportComponent extends Component {
             this.isIndicating = true;
             this.cam.getForward(this._tempVec);
             this._tempVec[1] = 0;
-            glMatrix.vec3.normalize(this._tempVec, this._tempVec);
+            vec3.normalize(this._tempVec, this._tempVec);
             this._camRotation = Math.atan2(this._tempVec[0], this._tempVec[2]);
         } else if (
             this.isIndicating &&
@@ -81,7 +82,7 @@ export class ControllerTeleportComponent extends Component {
                 this.hitSpot[1] = 0;
                 this.cam.getForward(this._tempVec);
                 this._tempVec[1] = 0;
-                glMatrix.vec3.normalize(this._tempVec, this._tempVec);
+                vec3.normalize(this._tempVec, this._tempVec);
                 this._camRotation = Math.atan2(this._tempVec[0], this._tempVec[2]);
                 this._camRotation = this._currentIndicatorRotation - this._camRotation;
                 this.camRoot.rotateAxisAngleRad([0, 1, 0], this._camRotation);
@@ -96,12 +97,12 @@ export class ControllerTeleportComponent extends Component {
 
         if (this.isIndicating && this.teleportIndicatorMeshObject && this.input) {
             let origin = [0, 0, 0];
-            glMatrix.quat2.getTranslation(origin, this.object.getTransformWorld());
+            quat2.getTranslation(origin, this.object.getTransformWorld());
 
             let quat = this.object.getTransformWorld();
 
             let forwardDirection = [0, 0, 0];
-            glMatrix.vec3.transformQuat(forwardDirection, [0, 0, -1], quat);
+            vec3.transformQuat(forwardDirection, [0, 0, -1], quat);
             let rayHit = this.engine.scene.rayCast(
                 origin,
                 forwardDirection,

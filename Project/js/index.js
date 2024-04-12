@@ -63,7 +63,7 @@ async function main() {
 
     function requestSession(mode) {
         engine
-            .requestXRSession(mode, WebXRRequiredFeatures, WebXROptionalFeatures)
+            .requestXRSession(mode, Constants.WebXRRequiredFeatures, Constants.WebXROptionalFeatures)
             .catch((e) => console.error(e));
     }
 
